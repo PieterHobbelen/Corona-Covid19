@@ -299,6 +299,24 @@ Continent <- c("North America", "North America", "South America", "Africa", "Afr
 Reliability_test_capacity <- c("Good", "Bad", "Bad", "Bad", "Bad", "Bad", "Very Good", "Good", 
             "Bad", "Bad","Normal", "Good", "Bad")
 
+
+western_countries <- c("Spain", "UK", "Sweden", "Germany", "Italy", "Iceland", "Latvia", "Greece", "Russia", "Serbia", "Croatia", "Ukraine", "Slovakia", "USA", "Canada", 
+                       "Australia", "New Zealand")
+
+western_countries_pop <- c(Spain_pop, UK_pop, Sweden_pop, Germany_pop, Italy_pop, Iceland_pop, Latvia_pop, Greece_pop, Russia_pop, Serbia_pop, Croatia_pop, Ukraine_pop, 
+                           Slovakia_pop, USA_pop, Canada_pop, Australia_pop, New_Zealand_pop)
+
+western_countries_confirmed <- c(Spain_conf_cases, UK_conf_cases, Sweden_conf_cases, Germany_conf_cases, Italy_conf_cases, Iceland_conf_cases, Latvia_conf_cases, Greece_conf_cases,
+                                 Russia_conf_cases, Serbia_conf_cases, Croatia_conf_cases, Ukraine_conf_cases, Slovakia_conf_cases, USA_conf_cases, Canada_conf_cases, 
+                                 Australia_conf_cases, New_Zealand_conf_cases)
+
+western_countries_deaths <- c(Spain_death_cases, UK_death_cases, Sweden_death_cases, Germany_death_cases, Italy_death_cases, Iceland_death_cases, Latvia_death_cases, Greece_death_cases,
+                              Russia_death_cases, Serbia_death_cases, Croatia_death_cases, Ukraine_death_cases, Slovakia_death_cases, USA_death_cases, Canada_death_cases, 
+                              Australia_death_cases, New_Zealand_conf_cases)
+
+western_countries_confirmed_rate <- western_countries_confirmed/western_countries_pop
+western_countries_deaths_rate <- western_countries_deaths/western_countries_pop 
+
 Population <- c(North_America_pop, Mid_America_pop, South_America_pop, South_Africa_pop, Mid_East_Africa_pop, North_West_Africa_pop, North_West_Europe_pop, 
                                    East_Europe_pop, South_West_Azia_pop, South_East_Azia_pop, Mid_Azia_pop, Oceania_pop, Pacific_and_Atlantic_Island_pop)
 
@@ -316,3 +334,5 @@ Death_rate_per_million <- Death_cases/Population*1000000
 
 corona_continents_regions <- data.frame(Continent, Region, Population, Confirmed_cases, Death_cases, Confirmed_rate_per_million, Death_rate_per_million)
 
+
+corona_western_countries <- data.frame(western_countries, western_countries_pop, western_countries_confirmed, western_countries_deaths, western_countries_confirmed_rate, western_countries_deaths_rate)

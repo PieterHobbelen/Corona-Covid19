@@ -8,7 +8,7 @@ library(tidyverse)
 
   # The state_USA is a vector with 56 terms, the 50 states and DC, and the US territories (Guam, Puerto Rico, American Samoa, the Northern Mariana Island and the US Virgin Island).
   state_USA <- c("New York", "New Jersey", "California", "Illinois", "Massachusetts", "Texas", "Pennsylvania", "Florida", "Michigan", "Maryland", "Georgia", "Virginia", "Louisiana", "Connecticut", 
-               "North Carolina", "Ohio", "Indiana", "Arizona", "Tenessee", "Minnesota", "Colorado", "Alabama", "Washington", "Iowa", "Wisconsin", "South Carolina", "Missisipi", "Nebraska", 
+               "North Carolina", "Ohio", "Indiana", "Arizona", "Tennessee", "Minnesota", "Colorado", "Alabama", "Washington", "Iowa", "Wisconsin", "South Carolina", "Missisipi", "Nebraska", 
                "Rhode Island", "Missouri", "Utah", "Kentucky", "Arkansas", "Kansas", "Nevada", "Delaware", "New Mexico", "District of Columbia", "Oklahoma", "South Dakota", "Puerto Rico", 
                "Oregon", "New Hampshire", "Idaho", "North Dakota", "Maine", "West Virginia", "Vermont", "Wyoming", "Hawaï", "Alaska", "Montana", "Guam", "US Virgin Islands", 
                "Northern Mariana Islands", "American Samoa")
