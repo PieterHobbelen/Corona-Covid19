@@ -94,8 +94,9 @@ When we look at the picture we see all the 56 states or territories and the blac
 In the next figure I'm gonna solve that the labels off the smaller states are overlapping eachother by choosing another scale on the X-axis. The problem is that there are only 4 states with a population bigger or equal to 20 million people. So the right side of the figure has 4 labels and the left side the other 52 labels. The solution is to choose a X-scale that is in a logarithmic scale, a scale where 0 to 1 is the same size as 1 to 10 and 10 to 100. So we make the X-scale logarithmic with base 10 (log10). Instead of an average USA line we use another method to determine the normal states. I the second figure we see a blue line and a grey area around that line, that area indicates the area where a 'normal' USA state is located. We see that the outliers are New York (NY), New Jersey (NJ), Illinois (IL), Massachusetts (MA), Connecticut (CT), Louisiana (LA) and Maryland (MD) with a higher confirmed rate than usual. The ouliers when it comes to a lower confirmed rate than usual are Ohio (OH), Montana (MO), the state Washington (WA), North Carolina (NC), Georgia (GA), Florida (FL) and Texas (TX). We see that California is no outlier now, probably because there is no state to compare the population with. When there is no stata to compare the values of California with, the line and area that indicates the normal value is going to California values.
 
 Now we are going to make the same two plots, so one plot in a normal continious X-scale and another one in a logaratmic X-scale with base 10 (log 10). We are going to plot data for each state, but this time we want to see in stead of the confirmed cases the amount of deaths due to Corona. Note that it is impossible to know for sure that the deathcase is actually Corona but we use the data that is probably the amount of deaths due to Corona.
-When we plot the figure we see again that New York has an extreme high rate, whether it is about confirmed cases or death cases. When we are going to look at outliers the outliers are almost the same states. The outliers with a higher death rate are Connecticut (CT), Louisiana (LA), Massachusetts (MA), New Jersey (NJ) and New York (NY), so Illinois (IL) and Maryland (MD) are now located in the 'normal' area. The outliers with a lower death rate than normal are Tennessee (TN), Virginia (VA), Georgia (GA) Ohio (OH), North Carolina (NC), Florida (FL) and Texas (TX).
-```{r plots, echo=FALSE}
+When we plot the figure we see again that New York has an extreme high rate, whether it is about confirmed cases or death cases. When we are going to look at outliers the outliers are almost the same states. The outliers with a higher death rate are Connecticut (CT), Louisiana (LA), Massachusetts (MA), New Jersey (NJ) and New York (NY), so Illinois (IL) and Maryland (MD) are now located in the 'normal' area. The outliers with a lower death rate than normal are Tennessee (TN), Virginia (VA), Georgia (GA) Ohio (OH), North Carolina (NC), Florida (FL) and Texas (TX). We did not see some big change somewhere, like that the location of the states is very much changed. The place has remained about the same compared to the other states.
+
+```{r plots about the USA states scatterplot, echo=FALSE}
 corona_usa_total_state %>% ggplot(aes(population_states_USA/10^6, confirmed_cases_USA/10^3, label = abbs_states_USA, color = region_USA)) + geom_label() + geom_abline(intercept = 0, slope = (confirmed_cases_total_USA/10^3)/(population_USA/10^6)) + ggtitle("Corona patients in the 50 states, DC and the American Territories") + ylab("Confirmed cases * 1.000") + xlab("Population of the state * 1.000.000")
 
 corona_usa_total_state %>% ggplot(aes(population_states_USA/10^6, confirmed_cases_USA/10^3, label = abbs_states_USA)) + geom_label_repel() + geom_point() + geom_smooth(aes(population_states_USA/10^6, confirmed_cases_USA/10^3))  + ggtitle("Corona patients in the 50 states, DC and the American Territories") + ylab("Confirmed cases * 1.000") + xlab("Population of the state * 1.000.000, log 10 scale") + scale_x_continuous(trans = "log10")
@@ -105,5 +106,18 @@ corona_usa_total_state %>% ggplot(aes(population_states_USA/10^6, death_cases_US
 corona_usa_total_state %>% ggplot(aes(population_states_USA/10^6, death_cases_USA, label = abbs_states_USA)) + geom_label_repel() + geom_point() + geom_smooth(aes(population_states_USA/10^6, death_cases_USA))  + ggtitle("Deaths due to Corona in the 50 states, DC and the American Territories") + ylab("Death cases") + xlab("Population of the state * 1.000.000, log 10 scale") + scale_x_continuous(trans = "log10")
 ```
 
+```{r plots about The Netherlands provinces scatterplot, echo=FALSE}
+corona_nl_total_province %>% ggplot(aes(population_provices_NL, confirmed_cases_NL, label = province_NL, color = region_NL)) + geom_label() + geom_abline(intercept = 0, slope = sum(confirmed_cases_NL)/sum(population_provices_NL))
+
+corona_nl_total_province %>% ggplot(aes(population_provices_NL, confirmed_cases_NL, label = province_NL)) + geom_label_repel() + geom_smooth() + scale_x_continuous(trans = "log10") + geom_point()
+
+corona_nl_total_province %>% ggplot(aes(population_provices_NL, death_cases_NL, label = province_NL, color = region_NL)) + geom_label() + geom_abline(intercept = 0, slope = sum(death_cases_NL)/sum(population_provices_NL))
+
+corona_nl_total_province %>% ggplot(aes(population_provices_NL, death_cases_NL, label = province_NL)) + geom_label_repel() + geom_smooth() + scale_x_continuous(trans = "log10") + geom_point()
+
+corona_nl_total_province %>% ggplot(aes(population_provices_NL, hospital_cases_NL, label = province_NL, color = region_NL)) + geom_label() + geom_abline(intercept = 0, slope = sum(hospital_cases_NL)/sum(population_provices_NL))
+
+corona_nl_total_province %>% ggplot(aes(population_provices_NL, hospital_cases_NL, label = province_NL)) + geom_label_repel() + geom_smooth() + scale_x_continuous(trans = "log10") + geom_point()
+```
 
 
