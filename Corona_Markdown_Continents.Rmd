@@ -1,29 +1,16 @@
-# I'm gonna compare the 'continent regions with eachother in this dataset. To do this I will take some countries that will represent the region, the countries that I
-# will take you can see below.
-  # North America; Because North America contains three countries (I will locate Mexico in North America and not in Mid America), I will not split the continent in 
-  # regions. The territories of the USA are Pacific and Atlantic Island or Mid America. I will take the data of all the three counries.
-  # Mid America; Mid America are the countries located between Mexico and Colombia and the Island in the Caribbean. I will take the data of all the countries on the
-  # mainland, Cuba and the Dominican Republic.
-  # South America; South America is just the mainland of South America. I will take the data of Brazil, Peru, Argentinia, Venezuela and Suriname.
-  # South Africa; I devide Africa in three regions, the eqautor is a border. South Africa are all the African Countries below the equator, I will take the data of
-  # South Africa (the country), Madagascar, Tanzania and Zambia.
-  # Mid East Africa; We seperate Mid East Africa from North West Africa by draw an imaginary line from Cameroon to Egypt, and we use data from Camaroon, Egypt, Ethiopia 
-  # Uganda and Eritrea.
-  # North West Africa; We take the data from Morocco, Libya, Mali, Ghana, Nigeria and Chad.
-  # North West Europe; Europe is devided in two regions. When we draw an imaginary line from Croatia to Finland's border with Russia we see the first region North West 
-  # Europe (The Western mainland and Scandinavia), and the second region European Russia and Eastern Europe. We count Russia as an European country and Turkey we use
-  # no data from Turkey, because we 70% of the population of Russia lives in the European part and I can't find which part of the population of Turkey lives in the 
-  # European part. I am going to use for North West Europe the data from Spain, the UK, Sweden, Germany, Italy, Iceland and Latvia. Eastern Europe will be Greece, Russia, 
-  # Serbia, Croatia, Ukraine and Slovakia.
-  # South West Azia; We are going to devide Azia in three regions, first note that we don't use Russia (European country), and the data of Turkey. South West Azia are 
-  # the oil-countries and the countries and the region stops on the border with India and China. South East Asia is the region Indonesia and the countries by the Indian 
-  # Ocean. The other countries, such as China and Japan are Mid Azia. I'll use the data of Yemen, Saudi-Arabia, Iran and Pakistan for South West Azia. The data of India, 
-  # Indonesia, Thailand, the Philippines and Myanmar for South East Azia and China, South Korea, Japan and Mongolia for Mid Azia.
-  # Oceania are just the the two big islands Australia and New Zealand and the little island in the oceans around Australia. I'm gonna use the data of Australia, New 
-  # Zealand and to take one island in the ocean around Australia I use also the data of Papoea-New-Guinea.
-  # The region Pacific and Atlantic Islands is more complicated. I'll use for this region the less developped island in the oceans but the islands must report their data. 
-  # So I use the Falklandislands, Fiji, Antigua and Barbuda, British Virgin Islands, Greenland, New Caledonia, Bermuda and Faeroer. 
+---
+title: "Corona on the continents"
+author: "Pieter Hobbelen"
+date: "6/21/2020"
+output: html_document
+---
 
+```{r load the libraries, echo=FALSE, message=FALSE}
+library(tidyverse)
+```
+
+
+```{r load the datasets, echo=FALSE, message=FALSE}
 Mexico_pop <- 128932753
 USA_pop <- 331002651
 Canada_pop <- 37742154
@@ -290,7 +277,7 @@ Pacific_and_Atlantic_Island_death_cases <- Falklandislands_death_cases + Fiji_de
 Region <- c("North America", "Mid America", "South America", "South Africa", "Mid East Africa", "North West Africa", "North West Europe", "East Europe", 
                         "South West Azia", "South East Azia","Mid Azia", "Oceania", "Pacific and Atlantic Islands")
 
-Abb_region <- c("N America", "Lat. America", "S America", "S Africa", "ME Africa", "NW Africa", "NW Europe", "E Europe", 
+Abb_region <- c("N America", "Mid America", "S America", "S Africa", "ME Africa", "NW Africa", "NW Europe", "E Europe", 
             "SW Azia", "SE Azia","M Azia", "Oceania", "Pac. Atl. Islands")
 
 Continent <- c("North America", "North America", "South America", "Africa", "Africa", "Africa", "Europe", "Europe", "Azia", "Azia","Azia", "Oceania", 
@@ -336,3 +323,5 @@ corona_continents_regions <- data.frame(Continent, Region, Population, Confirmed
 
 
 corona_western_countries <- data.frame(western_countries, western_countries_pop, western_countries_confirmed, western_countries_deaths, western_countries_confirmed_rate, western_countries_deaths_rate)
+```
+
