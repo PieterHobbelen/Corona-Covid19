@@ -8,6 +8,11 @@ graph_a_scatter_pop_conf_USA <- corona_usa_total_state %>% ggplot(aes(population
 graph_b_scatter_pop_death_USA <- corona_usa_total_state %>% ggplot(aes(population_states_USA/1000000, death_cases_USA, label = abbs_states_USA, color = region_USA)) + geom_label() + 
   xlab("Population in millions") + ylab("Deaths due to Corona USA") + geom_abline(intercept = 0, slope = death_cases_total_USA/(population_USA/1000000))
 
+graph_aaaa_scatter_pop_conf_USA <- corona_usa_total_state %>% ggplot(aes(population_states_USA/1000000, confirmed_cases_USA, label = abbs_states_USA)) + geom_smooth() + geom_label_repel() + 
+  xlab("Population in millions") + ylab("Positive Corona patiens USA") + geom_abline(intercept = 0, slope = confirmed_cases_total_USA/(population_USA/1000000)) + scale_x_log10()
+graph_bbbb_scatter_pop_death_USA <- corona_usa_total_state %>% ggplot(aes(population_states_USA/1000000, death_cases_USA, label = abbs_states_USA, color = region_USA)) + geom_label() + 
+  xlab("Population in millions") + ylab("Deaths due to Corona USA") + geom_abline(intercept = 0, slope = death_cases_total_USA/(population_USA/1000000)) + scale_x_log10()
+
 # Scatterplots of the positive Corona patients and the Corano related deaths. We make four scatterplots, for each one a cumulative and a normal scatterplot. When we see all four scatterplots we can conclude 
 # that the USA is a heardly hit country and when other western countries are at the end of the Corona crisis the USA is in the middle of the crisis. In mid-june Europe opens the borders because it gets better
 # (except the UK and Sweden).
@@ -30,6 +35,13 @@ graph_h_scatter_pop_death_NL <- corona_nl_total_province %>% ggplot(aes(populati
 graph_i_scatter_pop_hosp_NL <- corona_nl_total_province %>% ggplot(aes(population_provices_NL, hospital_cases_NL, label = province_NL, color = region_NL)) + geom_label() +
   geom_abline(intercept = 0, slope = sum(hospital_cases_NL)/sum(population_provices_NL))
 
+graph_gggg_scatter_pop_conf_NL <- corona_nl_total_province %>% ggplot(aes(population_provices_NL, confirmed_cases_NL, label = province_NL)) + geom_smooth() + geom_label_repel() + geom_point() + 
+  scale_x_log10()
+graph_hhhh_scatter_pop_death_NL <- corona_nl_total_province %>% ggplot(aes(population_provices_NL, death_cases_NL, label = province_NL)) + geom_smooth() + geom_label_repel() + geom_point() + 
+  scale_x_log10()
+graph_iiii_scatter_pop_hosp_NL <- corona_nl_total_province %>% ggplot(aes(population_provices_NL, hospital_cases_NL, label = province_NL)) + geom_smooth() + geom_label_repel() + geom_point() + 
+  scale_x_log10()
+ 
 # Scatterplot c:
 # We see the cumulative confirmed positive Corona cases in the USA, and we see a blue and a red line. The blue line indicates 21 march and I plot it because on the left side there is not yet a Corona crisis 
 # when you look at the graph. At the right side the cases are increasing exponential until the scatterplot crossed the red line. The period from the red line until today is a almost a constant line with about 
