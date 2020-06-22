@@ -109,20 +109,25 @@ tab <- corona_usa_total_state[order(Alphabetic),] %>% select (State = state_USA,
 kable(cbind(tab)) %>% kable_styling() %>% scroll_box(width = "100%", height = "200px")
 ```
 
+
 We have two types of figures, the first one is a figure with the date per state or province. It represents the amount of cases by plotting a point which location represents the population (the X-coordinate) of the state and the amount of cases (the Y-coordinate). To determine whether the state has a normal case rate, a higher case rate or a lower case rate we plot in the figure also a line that represents the average and around the line an area that represent the area where a 'normal' state is located.
 The second figure type is a time based figure, with on the X-axis all the days that are in the database, so on the X-axis we have the period with the 'Corona days'. The first data for the USA is published on march 4, the first data for The Netherlands is published on march 6.
 
 The first figure, figure A, represents the amount of total confirmed cases per state. We see all the states and the territories American Samoa, the Northern Mariana Islands, Guam, the American Virgin Islands Puerto Rico and the District of Columbia (Washington D.C.).
 
-```{r, echo=FALSE,message=FALSE}
+```{r plot a normal scale on the x for conf cases USA, echo=FALSE,message=FALSE}
 corona_usa_total_state %>% ggplot(aes(population_states_USA/10^6, confirmed_cases_USA/10^3, label = abbs_states_USA)) + geom_label_repel(aes(color = region_USA)) + geom_point(aes(color = region_USA)) + geom_smooth(method = "lm") + ggtitle("Figure a; Corona patients in the 50 states, DC and the American Territories") + ylab("Confirmed cases * 1.000") + xlab("Population of the state * 1.000.000")  + theme(legend.position = "right", legend.background = element_rect(fill="lightblue", size=0.5, linetype = "solid", color = "darkblue")) + labs(color = "Regions in the USA: ")
 ```
+
+
 We see that it is difficult to determine the location compered to the area that indicates the 'normal states' for the states with a small population. We see that the left side of the figure contains 53 states and the right side contains only 3 states.
 When we change the X-scale, and make the scale instead of continious in figure B logarithmic with base 10, we will get a X-axis where 0 to 1 is the same as 10 to 100 and 100 to 1.000. So we use exact the same data in both figures, the only difference is that the X-axis in figure B is in log 10 scale.
 
-```{r, echo=FALSE, message=FALSE}
+```{r plot a log10 on the x for conf cases USA, echo=FALSE, message=FALSE}
 corona_usa_total_state %>% ggplot(aes(population_states_USA/10^6, confirmed_cases_USA/10^3, label = abbs_states_USA)) + geom_smooth(method = "gam") + geom_label_repel(aes(color = region_USA)) + geom_point(aes( color = region_USA)) + ggtitle("Figure b; Corona patients in the 50 states, DC and the American Territories") + ylab("Confirmed cases * 1.000") + xlab("Population of the state * 1.000.000, log 10 scale") + scale_x_continuous(trans = "log10") + theme(legend.position = "right", legend.background = element_rect(fill="lightblue", size=0.5, linetype = "solid", color = "darkblue")) + labs(color = "Regions the USA: ")
 ```
+
+
 We have now two figures, with the same data but in the second one we have a better view. We see that the states Connecticut (CT), Massachusetts (MA), New Jersey (NJ), Illinois (IL), and especially New York (NY) are the outliers with a high confirmed case rate. 
 We see that New York's rate is extremely high, when we calculate the average rate and New Yorks rate we get that New York has 384.000 confirmed cases and a population of 19.45 million people. When we determine how many persons are Corona patients we get that almost 2 per 100 persons have the Corona-virus in New York. When we do the same, but in stead of New York's population we will use the population of the USA, and in stead of New York's confirmed cases, we will use all the confirmed cases. When we do that we will get the average rate, and convert that into how many persons have Corona per 1000 persons this time, which is 6.25 per 1.000 persons. New York's confirmed rate is 3.15 times bigger than the average confirmed rate.
 The opposite of Connecticut, Massachusetts, New Jersey, Illinois and New York with higher confirmed rates than usual, the states with lower confirmed rates, are 10 states that are located almost in the 'normal area' and 5 states further away from that area. I will call the first 10 states not really outliers, so the outliers are Washington (WA), Ohio (OH), North Carolina (NC), Florida (FL) and Texas (TX). But this we see not a extremely high outlier, such as the confirmed rate of New York. 
@@ -130,55 +135,56 @@ When we look at the figures and the state's region we see that especially the no
 
 Now we do the same thing but we use instead of the confirmed cases the amount of deaths due to Corona per state, so the death rate. We will create figure C and figure D, again we use the same data in both figures, but we transform in figure D the X-axis to a logarithmic scale with base 10.
 
-```{r plots about the USA confirmed cases states scatterplot, echo=FALSE, message= FALSE}
-corona_usa_total_state %>% ggplot(aes(population_states_USA/10^6, death_cases_USA, label = abbs_states_USA)) +  geom_smooth(method = "lm")+ geom_label_repel(aes(color = region_USA)) + geom_point(aes(color = region_USA)) + ggtitle("Figure C; Corona patients in the 50 states, DC and the American Territories") + ylab("Death cases") + xlab("Population of the state * 1.000.000")  + theme(legend.position = "right", legend.background = element_rect(fill="lightblue", size=0.5, linetype = "solid", color = "darkblue")) + labs(color = "Regions in the USA: ")
+```{r plot a normal scale on the x for deaths cases USA, echo=FALSE, message= FALSE}
+corona_usa_total_state %>% ggplot(aes(population_states_USA/10^6, death_cases_USA, label = abbs_states_USA)) +  geom_smooth(method = "lm")+ geom_label_repel(aes(color = region_USA)) + geom_point(aes(color = region_USA)) + ggtitle("Figure C; Deaths due to Corona in the 50 states, DC and the American Territories") + ylab("Death cases") + xlab("Population of the state * 1.000.000")  + theme(legend.position = "right", legend.background = element_rect(fill="lightblue", size=0.5, linetype = "solid", color = "darkblue")) + labs(color = "Regions in the USA: ")
 ```
 
-```{r plots about the USA death cases states scatterplot, echo=FALSE, message= FALSE}
+```{r plot a log10 on the x for deaths cases USA, echo=FALSE, message= FALSE}
 corona_usa_total_state %>% ggplot(aes(population_states_USA/10^6, death_cases_USA, label = abbs_states_USA)) + geom_smooth(method = "gam") +  geom_label_repel(aes(color = region_USA)) + geom_point(aes(color = region_USA)) + ggtitle("Figure D; Deaths due to Corona in the 50 states, DC and the American Territories") + ylab("Death cases") + xlab("Population of the state * 1.000.000, log 10 scale") + scale_x_continuous(trans = "log10") + theme(legend.position = "right", legend.background = element_rect(fill="lightblue", size=0.5, linetype = "solid", color = "darkblue")) + labs(color = "Regions in the USA: ")
 ```
+
+
 Again we look at the outliers compared to the 'normal area' on both sides. To determine the actual outliers I am going to ignore the outliers that are almost in the 'normal area'. When we do this we will get the actual outliers with a high death rate New York (NY), New Jersey (NJ), Massachusetts (MA), Pennsylvania (PA), Illinios (IL) and Michigan (Mi). Again New York has an extremely high death rate and no other state is near New York. The real outliers with a lower death rate Tennessee (TN), Oregon (OR), North Carolina (NC) and Texas (TX) and Florida (FL).
 We see again that the north eastern states have a high death rate and that the south eastern states have a low death rate.
-
 
 Now we are going to look at The Netherlands. The RIVM, the official institute that published the official data, provides also data about the Corona patients on the Intensive Care (IC), the hospital cases. We are going to create the same figures but this time for The Netherlands, and also the figures with the hospital cases.
 First we will create figure E, with normal scales on the axis and about the confirmed cases. Figure F is also about that data, but this time with a logarithmic X-scale.
 
-```{r, echo=FALSE, message=FALSE}
+```{r plot a normal scale on the x for conf cases NL, echo=FALSE, message=FALSE}
 corona_nl_total_province %>% ggplot(aes(population_provices_NL/10^6, confirmed_cases_NL, label = province_NL)) + geom_smooth(method = "lm") + geom_label_repel(aes(color = region_NL)) + geom_point(aes(color = region_NL)) + theme(legend.position = "right", legend.background = element_rect(fill="lightblue", size=0.5, linetype = "solid", color = "darkblue")) + labs(color = "Regions The Netherlands: ") + ylab("Confirmed cases") + xlab("Population of the provice * 1.000.000") + ggtitle("Figure E; Corona patients in the 12 provinces in The Netherlands")
 ```
 
 
 We see a big difference with the United States of America. Some states in the USA are located far away from the 'normal area', every province in the Netherlands are located in, or near the 'normal area'. The only provinces outside that area are Noord-Holland with a slightly lower confirmed rate, and Limburg and Noord-Brabant with a slightly higher confirmed rate. When you look at the regions it is clear the the southern provinces has high confirmed rates, the provinces in the middle are not only in the area, but located on the line and the northern provinces have low confirmed rates.
 
-```{r, echo=FALSE, message=FALSE}
+```{r plot a log10 on the x for conf cases NL, echo=FALSE, message=FALSE}
 corona_nl_total_province %>% ggplot(aes(population_provices_NL/10^6, confirmed_cases_NL, label = province_NL)) + geom_smooth(method = "gam") + geom_label_repel(aes(color = region_NL)) + geom_point(aes(color = region_NL)) + theme(legend.position = "right", legend.background = element_rect(fill="lightblue", size=0.5, linetype = "solid", color = "darkblue")) + labs(color = "Regions The Netherlands: ") + ylab("Confirmed cases") + xlab("Population of the provice * 1.000.000, log 10 scale") + ggtitle("Figure F; Corona patients in the 12 provinces in The Netherlands") + scale_x_log10()
 ```
+
 
 We see the same outliers in both figures, Limburg and Noord-Brabant with a higher confirmed rate, and Noord-Holland with a lower confirmed rate. We see again that the southern provinces have high rates, the provinces in the middle around around the line and in the area, and that the northern provinces have low rates when it comes to confirmed cases.
 
 Now we are going to make the figures with the deaths due to Corona, again with a normal X-scale and a logarithmic rate. Again we are going to look at the outliers and compare the outliers with the outliers in the scatterplot with the Corona deaths in the USA. The first figure, figure G, has a normal X-scale. The second figure, figure H, has a logarithmic X-scale, so we can see the location of the smaller provinces better. The use of the logarithmic X-scale to see the less populated states or provinces is necessary for the United States of America, we can see the locations of all the provinces in The Netherlands in the first figure, but I make the figure also in a logarithmic X-scale.
 
-```{r, echo=FALSE, message=FALSE}
+```{r plot a normal scale on the x for death cases NL, echo=FALSE, message=FALSE}
 corona_nl_total_province %>% ggplot(aes(population_provices_NL/10^6, death_cases_NL, label = province_NL)) + geom_smooth(method = "lm") + geom_label_repel(aes(color = region_NL)) + geom_point(aes(color = region_NL)) + theme(legend.position = "right", legend.background = element_rect(fill="lightblue", size=0.5, linetype = "solid", color = "darkblue")) + labs(color = "Regions The Netherlands: ") + ylab("Death cases") + xlab("Population of the provice * 1.000.000") + ggtitle("Figure G; Deaths due to Corona in the 12 provinces in The Netherlands")
 ```
 
-
-
-```{r, echo=FALSE, message=FALSE}
+```{r plot a log10 on the x for death cases NL, echo=FALSE, message=FALSE}
 corona_nl_total_province %>% ggplot(aes(population_provices_NL/10^6, death_cases_NL, label = province_NL)) + geom_smooth(method = "gam") + geom_label_repel(aes(color = region_NL)) + geom_point(aes(color = region_NL)) + theme(legend.position = "right", legend.background = element_rect(fill="lightblue", size=0.5, linetype = "solid", color = "darkblue")) + labs(color = "Regions The Netherlands: ") + ylab("Death cases") + xlab("Population of the provice * 1.000.000, log 10 scale") + ggtitle("Figure H; Deaths due to Corona in the 12 provinces in The Netherlands") + scale_x_log10()
 ```
 
 
 We see a big difference in the outliers with a higher rate, the provinces Limburg and Noord-Brabant. In the confirmed rate the two provinces are located about the same distance from the 'normal Area'. When we look at the figure with the deaths due to Corona with the logarithmic X scale we see that Noord-Brabant has moved further away, while Limburg has not changed position. That means that the probability that a patient died given that it is a Corona patient already, is higher in Noord-Brabant compared to the same probability for Limburg.
 
-```{r, echo=FALSE, message=FALSE}
+```{r plot a normal scale on the x for hosp cases NL, echo=FALSE, message=FALSE}
 corona_nl_total_province %>% ggplot(aes(population_provices_NL/10^6, hospital_cases_NL, label = province_NL)) + geom_smooth(method = "lm") + geom_label_repel(aes(color = region_NL)) + geom_point(aes(color = region_NL)) + theme(legend.position = "right", legend.background = element_rect(fill="lightblue", size=0.5, linetype = "solid", color = "darkblue")) + labs(color = "Regions The Netherlands: ") + ylab("Hospital cases") + xlab("Population of the provice * 1.000.000") + ggtitle("Figure I; Hospital cases (IC's) in the 12 provinces in The Netherlands")
 ```
 
-```{r, echo=FALSE, message=FALSE}
+```{r plot a log10 on the x for hosp cases NL, echo=FALSE, message=FALSE}
 corona_nl_total_province %>% ggplot(aes(population_provices_NL/10^6, hospital_cases_NL, label = province_NL)) + geom_smooth(method = "gam") + geom_label_repel(aes(color = region_NL)) + geom_point(aes(color = region_NL)) + theme(legend.position = "right", legend.background = element_rect(fill="lightblue", size=0.5, linetype = "solid", color = "darkblue")) + labs(color = "Regions The Netherlands: ") + ylab("Hospital cases") + xlab("Population of the provice * 1.000.000, log 10 scale") + ggtitle("Figure J; Hospital cases (IC's) in the 12 provinces in The Netherlands") + scale_x_log10()
 ```
+
 
 We see again that the outliers with a high rate, this time with the hospital cases, are Noord-Brabant and Limburg. Again we see that Noord-Brabant has moved further away, while Limburg has not changed position compared to the confirmed cases figure. That means that the probability that a patient with Corona, is also a hospital case is higher in Noord-Brabant compared to the same probability for Limburg.
 
@@ -186,11 +192,17 @@ The big difference between the figures with data for the United states of Americ
 When we look at outliers in the figures with the United States of America's data, we see a whole different figures. The states of America and it's territories has many outliers, on both sides of the normal 'area'. We determined earlier the ratio of the extreme outlier New York. New York's confirmed rate is 3.15 times bigger than the average confirmed rate and the death rate is 4.79 times bigger than the average for the United States of America and it's territories.
 A scatterplot and the amount of outliers can tell us something about the type of distribution. When the 'points' are located near or on the average line we call it a normal distribution, we can check this with a density plot or with a histogram, because we have for the United States of America 56 rates, we use density plots.
 
+```{r plot the distributions with densityplots, echo=FALSE, message=FALSE}
+dataset_distribution_conf_conf %>% ggplot(aes(c.vector_a.vector_b..vector_d.vector_e., fill = c..The.Netherlands....The.Netherlands....The.Netherlands....The.Netherlands...)) + geom_density(alpha = 0.6) + theme_replace() + xlab("Confirmed cases rate") + ylab("Density cases") +  ggtitle("Figure K; Confirmed cases rate distribution for the USA and NL") + theme(legend.title = element_blank(), legend.position = c(0.75, 0.86), legend.background = element_rect(fill = "white", size = 0.5, linetype = "solid", color = "black")) + geom_vline(xintercept = 0) + geom_hline(yintercept = 0) + geom_vline(aes(xintercept = mean(dataset_distribution_conf_conf_nl$c.vector_a.vector_b.)), color = "red") + geom_vline(aes(xintercept = mean(dataset_distribution_conf_conf_usa$c.vector_d.vector_e.)), color = "blue")
 
-```{r, echo=FALSE, message=FALSE}
-dataset_distribution_conf_conf %>% ggplot(aes(c.vector_a.vector_b..vector_d.vector_e., fill = c..The.Netherlands....The.Netherlands....The.Netherlands....The.Netherlands...)) + geom_density(alpha = 0.6) + theme_replace() + xlab("Confirmed cases rate") + ylab("Density cases") +  ggtitle("Confirmed cases rate distribution for the states and provinces in the USA and NL") + theme(legend.title = element_blank(), legend.position = c(0.75, 0.86), legend.background = element_rect(fill = "white", size = 0.5, linetype = "solid", color = "black")) + geom_vline(xintercept = 0) + geom_hline(yintercept = 0) + geom_vline(aes(xintercept = mean(dataset_distribution_conf_conf_nl$c.vector_a.vector_b.)), color = "red") + geom_vline(aes(xintercept = mean(dataset_distribution_conf_conf_usa$c.vector_d.vector_e.)), color = "blue")
-
-dataset_distribution_conf_conf %>% ggplot(aes(c.vector_c.vector_b..vector_f.vector_e., fill = c..The.Netherlands....The.Netherlands....The.Netherlands....The.Netherlands...)) + geom_density(alpha = 0.6) + theme_replace() + xlab("Confirmed cases rate") + ylab("Density cases") +  ggtitle("Death cases rate distribution for the states and provinces in the USA and NL") + theme(legend.title = element_blank(), legend.position = c(0.75, 0.86), legend.background = element_rect(fill = "white", size = 0.5, linetype = "solid", color = "black")) + geom_vline(xintercept = 0) + geom_hline(yintercept = 0) + geom_vline(aes(xintercept = mean(dataset_distribution_conf_conf_nl$c.vector_c.vector_b.)), color = "red") + geom_vline(aes(xintercept = mean(dataset_distribution_conf_conf_usa$c.vector_f.vector_e.)), color = "blue")
+dataset_distribution_conf_conf %>% ggplot(aes(c.vector_c.vector_b..vector_f.vector_e., fill = c..The.Netherlands....The.Netherlands....The.Netherlands....The.Netherlands...)) + geom_density(alpha = 0.6) + theme_replace() + xlab("Confirmed cases rate") + ylab("Density cases") +  ggtitle("Figure L; Death cases rate distribution for the USA and NL") + theme(legend.title = element_blank(), legend.position = c(0.75, 0.86), legend.background = element_rect(fill = "white", size = 0.5, linetype = "solid", color = "black")) + geom_vline(xintercept = 0) + geom_hline(yintercept = 0) + geom_vline(aes(xintercept = mean(dataset_distribution_conf_conf_nl$c.vector_c.vector_b.)), color = "red") + geom_vline(aes(xintercept = mean(dataset_distribution_conf_conf_usa$c.vector_f.vector_e.)), color = "blue")
 ```
 
 
+The figures K and L represent the distributions of the confirmed rates and the death rates in the United States of America and the American territories and The Netherlands. The distribution of the hospital rates in The Netherlands are not represented in the figures, but the distribution will be the same as the distribution of the confirmed and the death rates.
+We see in figure K 4 objects and lines, the red area, the blue area, the red line and the blue line. The red area is a density plot that represents the confirmed cases rates distribution for The Netherlands, and the red line represents the average. The blue area and line represent the same things, but this time for the United States and the American territories. In figure L we see the same things as in figure K, but this time in stead of the confirmed cases distribution we see the distribution of the death cases rate.
+When we look at the figures we see that the confirmed cases rate for The Netherlands has a normal distribution as expected, this is because there are only two real outliers and no extreme ouliers. When we compare that to distribution for the United States and the American territories, which scatterplot has more outliers and some extreme outliers, we see that the distribution has a maximum on the left side and it is a right side skewed distribution. In figure L we see again that the United states has a right skewed distribution and that The Netherlands has again a normal distribution. However, there are some changes. The left skewed distribution is stronger in the second figure, and in the first plot The Netherlands have one maximum, in the second plot we see that The Netherlands have two maximums, but the types of distribution did not change so we can expect for the hospital cases rate for The Netherlands also normal distributed data.
+
+
+Disclaimer:
+Responsibility or liability for the frequency of provision and accuracy of the Corona data     (COVID-19 data) or any use made of the Corona data (COVID-19 data) by the user pulled from the Github repository with author Pieter Hobbelen, whether or not arising from the negligency of any of the data (COVID-19 data) supplier, such as the author or the sources.
