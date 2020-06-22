@@ -59,8 +59,8 @@ library(tidyverse)
   death_cases_total_USA <- sum(death_cases_USA)
   
   # Now we must determine the rate if we want to compare the states. When we devide the cases (positive test or deaths) by the population we can compare the states because we will get a ratio.
-  confirmed_rate_percent_states_USA <- confirmed_cases_total_USA / population_USA * 100
-  death_rate_percent_states_USA <- death_cases_total_USA / population_USA * 100
+  confirmed_rate_thousand_states_USA <- confirmed_cases_USA / (population_states_USA / 10^4)
+  death_rate_million_states_USA <- death_cases_USA / (population_states_USA / 10^6)
   
 # I want to compare the USA with a western country, and maybe later add the data of other countries. But now I add the data of my country, The Netherlands. So I am going to add again the province, the region, an abbreviation 
 # is not necessary because there are only 12 provinces so you can read the labels when you see the whole name, the population, the confirmed cases, the Netherlands has data about hospital cases so also the hospital cases and
@@ -119,7 +119,16 @@ library(tidyverse)
                               83, 67, 165, 138, 123, 112, 120, 66, 43, 48, 145, 84, 98, 94, 69, 26, 86, 36, 84, 71, 63, 18, 16, 54, 52, 28, 53, 27, 10, 14, 21, 33, 27, 13, 23, 11, 8, 26, 15, 32, 28, 20, 5, 6, 5, 10, 13, 
                               15, 6, 2, 3, 15, 11, 2, 9, 4, 2, 6, 5, 4, 4, 3, 8) 
 
-  # The four lines below calculate four cumalitives; the cumalative new confirmed cases and deaths for the USA, and the same two cumulatives for The Netherlands
+  
+  conf_rate_1000_states_NL <- confirmed_cases_NL/population_provices_NL
+  death_rate_1000_states_NL <- death_cases_NL/population_provices_NL
+  
+  type_rate <- c("Confirmed * 100", "Confirmed * 100", "Confirmed * 100", "Confirmed * 100", "Confirmed * 100", "Confirmed * 100", "Confirmed * 100", "Confirmed * 100", "Confirmed * 100", "Confirmed * 100", "Confirmed * 100", "Confirmed * 100", 
+                 "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths")
+  
+  nl_rate_vector <-  c(conf_rate_1000_states_NL, death_rate_1000_states_NL*10)
+  
+  # The four lines below calculate four cumalatives; the cumulative new confirmed cases and deaths for the USA, and the same two cumulatives for The Netherlands
   total_confirmed_cases_cum_USA <- c(cumsum(total_new_confirmed_cases_USA))
   total_death_cases_cum_USA <- c(cumsum(total_new_death_cases_USA))
   total_confirmed_cases_cum_NL <- cumsum(total_new_confirmed_cases_NL)
@@ -128,13 +137,18 @@ library(tidyverse)
 # Now we are going to combine all the vectors with data.frame() in four databases.
   
   # This one contains all the data for the states and territories in the USA.
-  corona_usa_total_state <- data.frame(state_USA, region_USA, abbs_states_USA, confirmed_cases_USA, recovered_cases_USA, death_cases_USA, population_USA, confirmed_rate_percent_states_USA, death_rate_percent_states_USA)
+  corona_usa_total_state <- data.frame(state_USA, region_USA, abbs_states_USA, confirmed_cases_USA, recovered_cases_USA, death_cases_USA, population_states_USA, confirmed_rate_million_states_USA, death_rate_million_states_USA)
   
   # This one contains all the data for the 12 provinces in The Netherlands.
-  corona_nl_total_province <- data.frame(province_NL, region_NL, population_provices_NL , confirmed_cases_NL, hospital_cases_NL, death_cases_NL)
+  corona_nl_total_province <- data.frame(province_NL, region_NL, population_provices_NL , confirmed_cases_NL, hospital_cases_NL, death_cases_NL, conf_rate_1000_states_NL, death_rate_1000_states_NL)
   
   # This one contains all the data 'day to day' for the USA.
   corona_usa_day_to_day <- data.frame(day, total_new_confirmed_cases_USA, total_confirmed_cases_cum_USA, total_new_death_cases_USA, total_death_cases_cum_USA)
   
   # This one contains all the data 'day to day' for The Netherlands.
   corona_usa_day_to_day <- data.frame(day, total_new_confirmed_cases_NL, total_new_death_cases_NL, total_death_cases_cum_NL)
+  
+  corona_rates_nl <- data.frame(province_NL, type_rate, nl_rate_vector)
+  corona_rates_usa <- data.frame(confirmed_rate_million_states_USA, death_rate_million_states_USA)
+  
+  

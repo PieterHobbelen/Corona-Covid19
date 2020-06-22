@@ -15,10 +15,9 @@ corona_continents_scatter_pop_conf <- corona_continents_regions %>% ggplot(aes(P
   #geom_label() + geom_abline(intercept = 0, slope = sum(Death_cases)/sum(Population))
 
 corona_continents_scatter_pop_conf_western <- corona_western_countries %>% ggplot(aes(western_countries_pop, western_countries_confirmed, label = western_countries)) + 
-  geom_label() + geom_smooth() + geom_abline(intercept = 0, slope = sum(western_countries_confirmed)/sum(western_countries_pop))
+  geom_label() + geom_abline(intercept = 0, slope = sum(western_countries_confirmed)/sum(western_countries_pop))
 
 #corona_continents_scatter_pop_conf_western_log10 <- corona_western_countries %>% ggplot(aes(western_countries_pop, western_countries_confirmed, label = western_countries)) + 
- # geom_label() + geom_smooth() + geom_abline(intercept = 0, slope = sum(western_countries_confirmed)/sum(western_countries_pop))
+ # geom_label() + geom_smooth(method = "lm") + geom_abline(intercept = 0, slope = sum(western_countries_confirmed)/sum(western_countries_pop))
 
 corona_continents_scatter_pop_death_western <- corona_western_countries %>% ggplot(aes(western_countries_pop, western_countries_confirmed, label = western_countries)) 
-  

@@ -56,4 +56,4 @@
     geom_vline(xintercept = "04 07 2020", color = "red") + geom_vline(xintercept = "05 07 2020", color = "red") + xlab("Day, first data march 4 2020") + 
     ylab("New deaths due to Corona USA")
   
-  
+  corona_usa_nl_dens_cases_rate_nl_facet <- corona_rates_nl %>% ggplot(aes(nl_rate_vector, color = type_rate)) + geom_density() + facet_grid(. ~ type_rate) + ylab("cases") + xlab("rate")
