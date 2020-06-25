@@ -7,8 +7,10 @@ output: html_document
 
 ```{r load the libraries, echo=FALSE, message=FALSE}
 library(tidyverse)
+library(ggrepel)
+library(knitr)
+library(kableExtra)
 ```
-
 
 ```{r load the datasets, echo=FALSE, message=FALSE}
 Mexico_pop <- 128932753
@@ -290,6 +292,8 @@ Reliability_test_capacity <- c("Good", "Bad", "Bad", "Bad", "Bad", "Bad", "Very 
 western_countries <- c("Spain", "UK", "Sweden", "Germany", "Italy", "Iceland", "Latvia", "Greece", "Russia", "Serbia", "Croatia", "Ukraine", "Slovakia", "USA", "Canada", 
                        "Australia", "New Zealand")
 
+news_states_western_countries <- c("Problem", "Problem", "Normal Corona rate", "Normal Corona rate", "Problem", "Normal Corona rate", "Low Corona rate", "Low Corona rate", "Normal Corona rate", "Low Corona rate", "Low Corona rate", "Low Corona rate", "Low Corona rate", "Problem", "High Corona rate", "Low Corona rate", "Low Corona rate")
+
 western_countries_pop <- c(Spain_pop, UK_pop, Sweden_pop, Germany_pop, Italy_pop, Iceland_pop, Latvia_pop, Greece_pop, Russia_pop, Serbia_pop, Croatia_pop, Ukraine_pop, 
                            Slovakia_pop, USA_pop, Canada_pop, Australia_pop, New_Zealand_pop)
 
@@ -315,13 +319,83 @@ Death_cases <- c(North_America_death_cases, Mid_America_death_cases, South_Ameri
                  North_West_Africa_death_cases, North_West_Europe_death_cases, East_Europe_death_cases, South_West_Azia_death_cases, South_East_Azia_death_cases,
                  Mid_Azia_death_cases, Oceania_death_cases, Pacific_and_Atlantic_Island_death_cases)
 
+popover_message_regions <- c("USA and Canada", "Latin America", "The mainland of South America", "Southern Africa", "Mid eastern Africa", "North western Africa", "Western Europe and Scandinavia", "Eastern Europe and Russia", "The oil-states and western Azia", "South Eastern Azia", "Mid Azia without Russia", "Australia, New Zealand and Papoea New-Guinea", "All the small islands and archipelago")
+
 Confirmed_rate_per_million <- Confirmed_cases/Population*1000000
 
 Death_rate_per_million <- Death_cases/Population*1000000
 
-corona_continents_regions <- data.frame(Continent, Region, Population, Confirmed_cases, Death_cases, Confirmed_rate_per_million, Death_rate_per_million)
+corona_continents_regions <- data.frame(Continent, Region, Population, Confirmed_cases, Death_cases, Confirmed_rate_per_million, Death_rate_per_million, popover_message_regions)
 
 
-corona_western_countries <- data.frame(western_countries, western_countries_pop, western_countries_confirmed, western_countries_deaths, western_countries_confirmed_rate, western_countries_deaths_rate)
+corona_western_countries <- data.frame(western_countries, western_countries_pop, western_countries_confirmed, western_countries_deaths, western_countries_confirmed_rate, western_countries_deaths_rate, news_states_western_countries)
+
+# New dataset including the states and UK Italy and spain
+
+states_uk_sp_it <- c("New York", "New Jersey", "California", "Illinois", "Massachusetts", "Texas", "Pennsylvania", "Florida", "Michigan", "Maryland", "Georgia", "Virginia", "Louisiana", "Connecticut", "North Carolina", "Ohio", "Indiana", "Arizona", "Tennessee", "Minnesota", "Colorado", "Alabama", "Washington", "Iowa", "Wisconsin", "South Carolina", "Missisipi", "Nebraska", "Rhode Island", "Missouri", "Utah", "Kentucky", "Arkansas", "Kansas", "Nevada", "Delaware", "New Mexico", "District of Columbia", "Oklahoma", "South Dakota", "Puerto Rico", "Oregon", "New Hampshire", "Idaho", "North Dakota", "Maine", "West Virginia", "Vermont", "Wyoming", "Hawaï", "Alaska", "Montana", "Guam", "US Virgin Islands", "Northern Mariana Islands", "American Samoa", "United Kingdom", "Spain", "Italy")
+location <- c("USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA","USA", "USA", "USA", "USA", "USA","USA", "USA", "USA", "USA", "USA","USA", "USA", "USA", "USA", "USA","USA", "USA", "USA", "USA", "USA","USA", "USA", "USA", "USA", "USA","USA", "USA", "Washington D.C.", "USA", "USA","USA territory", "USA", "USA", "USA", "USA","USA", "USA", "USA", "USA", "USA","USA", "USA", "USA territory", "USA territory", "USA territory","USA territory", "Europe", "Europe", "Europe")
+population_states_uk_sp_it <- c(19450000, 8882000, 39510000, 12670000, 6893000, 29000000, 12800000, 21480000, 9987000, 6046000, 10620000, 8536000, 4649000, 3565000, 10490000, 11690000, 6732000, 7279000, 6829000, 5640000, 5759000, 4903000, 7615000, 3155000, 5822000, 5149000, 2976000, 1934000, 1059000, 6137000, 3206000, 4468000, 3018000, 2913000, 3080000, 973764, 2097000, 705749, 3957000, 884659, 3194000, 4218000, 1360000, 1787000, 762062, 1344000, 1792000, 623989, 578759, 1416000, 731545, 1069000, 165768, 106977, 56882, 55465, 66650000, 46940000, 60360000)
+conf_states_uk_sp_it <- c(384000, 167000, 151000, 134000, 105000, 87854, 77999, 75568, 65672, 60613, 57681, 53211, 46619, 44461, 44119, 40424, 39146, 35691, 30432, 29795, 28822, 25615, 25171, 23350, 22932, 18795, 18483, 16315, 15947, 15585, 13577, 11945, 11547, 11419, 10678, 10173, 9845, 9654, 7848, 5742, 5536, 5377, 5209, 3353, 3016, 2721, 2233, 1119, 1027, 728, 625, 573, 185, 72, 30, 0, 305000, 247000, 239000)
+deaths_states_uk_sp_it <- c(24579, 12676, 5089, 6507, 7538, 1976, 6162, 2931, 5990, 2900, 2451, 1534, 3014, 4146, 1109, 2508, 2396, 1188, 475, 1305, 1595, 773, 1204, 644, 694, 600, 868, 212, 833, 872, 139, 493, 171, 245, 462, 414, 440, 506, 359, 74, 146, 173, 308, 87, 74, 100, 86, 55, 18, 17, 12, 18, 5, 6, 2, 0, 42647, 28324, 34657)
+
+corona_states_uk_sp_it <- data.frame(states_uk_sp_it, location, population_states_uk_sp_it, conf_states_uk_sp_it, deaths_states_uk_sp_it)
 ```
 
+On this page we going to look at the Corona data around the world. To do this, we are going to devide the world in regions. The regions are based on the continents and the northern, eastern, southern, western or combinations thereof. Some regions are regions with countries with a specific characteristic, such as islands in an specific ocean. In the table below we see all the regions. We see regions such as North America, where the name says a lot about the coutries in that region. But regions like Mid America, South Africa, etc. are vague. In the table is a column with extra information.
+
+```{r create a table so the user can search the region and the abbreviation for each state, echo=FALSE, message=FALSE}
+tab_regions <- corona_continents_regions %>% mutate(Extra_information = c("Canada and the USA","Main land of Latin America","Mainland of South America","African countries below the equator","Eastern African countries above the equator","Western African countries above the equator","Western Europe and Scandinavia","Eastern Europe and Russia","Oil states and western Azia","Countries located at the coast of the Indian Ocean and Indonesia","Mid Azia except Russia","Australia, New Zealand and Paopoea New-Guinea","Small island and archipelagos in the Pacific and the Atlantic"))%>% select(Region, Continent, Extra_information) 
+kable(cbind(tab_regions)) %>% add_header_above(c("All the regions in the world" = 3)) %>% kable_styling("striped", "bordered") %>% scroll_box(width = "900px", height = "175px")
+```
+
+We have now the information the read the figures that we present on this page. 
+
+
+
+
+
+
+```{r plot the locations of the continent regions in a scatter plot, echo=FALSE, message=FALSE}
+corona_continents_regions %>% ggplot(aes(Population/10^6, Death_cases/10^3, label = Abb_region)) + geom_smooth(method = "gam") + geom_label_repel(aes(color = Reliability_test_capacity)) + geom_point() + ggtitle("Figure A; Amount of confirmed cases around the world and the 'average line'") + xlab("Population * 1.000.000") + ylab("Deaths * 1.000") + theme(legend.position = c(0.82, 0.79), legend.background = element_rect(fill = "lightblue", size = 0.5, linetype = "solid", color = "darkblue"))
+```
+
+```{r, echo=FALSE, message=FALSE}
+corona_continents_regions %>% ggplot(aes(Population/10^6, Death_cases/10^3, label = Abb_region)) + geom_smooth(method = "glm") + geom_label_repel(aes(color = Reliability_test_capacity)) + geom_point() + ggtitle("Figure B;Amount of confirmed cases around the world and the 'average line'") + xlab("Population * 1.000.000, log 10 scale") + ylab("Deaths * 1.000") + scale_x_log10() + theme(legend.position = c(0.18, 0.79), legend.background = element_rect(fill = "lightblue", size = 0.5, linetype = "solid", color = "darkblue"))
+```
+
+```{r, echo=FALSE, message=FALSE}
+corona_continents_regions %>% ggplot(aes(Population/10^6, Death_cases/10^3, label = Abb_region)) + geom_smooth(method = "gam") + geom_label_repel(aes(color = Reliability_test_capacity)) + geom_point(aes(color = Reliability_test_capacity)) + ggtitle("Figure C; Amount of death cases around the world and the 'average line'") + xlab("Population * 1.000.000") + ylab("Deaths * 1.000") + theme(legend.position = c(0.85, 0.79), legend.background = element_rect(fill = "lightblue", size = 0.5, linetype = "solid", color = "darkblue"))
+```
+
+```{r, echo=FALSE, message=FALSE}
+corona_continents_regions %>% ggplot(aes(Population/10^6, Death_cases/10^3, label = Abb_region)) + geom_smooth(method = "gam") + geom_label_repel(aes(color = Reliability_test_capacity)) + geom_point(aes(color = Reliability_test_capacity)) + ggtitle("Figure D; Amount of death cases around the world and the 'average line'") + xlab("Population * 1.000.000, log 10 scale") + ylab("Deaths * 1.000") + scale_x_log10() + theme(legend.position = c(0.15, 0.79), legend.background = element_rect(fill = "lightblue", size = 0.5, linetype = "solid", color = "darkblue"))
+```
+
+```{r test width, echo=FALSE, message=FALSE}
+corona_continents_regions %>% ggplot(aes(Population/10^6, Death_cases/10^3, label = Abb_region)) + geom_smooth(method = "gam") + geom_label_repel(aes(color = Reliability_test_capacity)) + geom_point(aes(color = Reliability_test_capacity)) + ggtitle("Figure D; Amount of death cases around the world and the 'average line'") + xlab("Population * 1.000.000, log 10 scale") + ylab("Deaths * 1.000") + scale_x_log10() + theme(legend.position = c(0.15, 0.79), legend.background = element_rect(fill = "lightblue", size = 0.5, linetype = "solid", color = "darkblue"))
+```
+
+```{r, echo=FALSE, message=FALSE}
+corona_western_countries %>% ggplot(aes(western_countries_pop/10^6, western_countries_confirmed, label = western_countries)) + geom_label_repel(aes(color = news_states_western_countries)) + geom_point() + geom_smooth(method = "glm") + xlab("Population * 1.000.000") + ylab("Confirmed cases") + ggtitle("Figure E; Confirmed cases in the Western countries (Europe and N. America)") + theme(legend.position = c(0.23, 0.775), legend.background = element_rect(fill = "lightblue", size = 0.5, linetype = "solid", color = "darkblue")) 
+```
+
+```{r, echo=FALSE, message=FALSE}
+corona_western_countries %>% ggplot(aes(western_countries_pop/10^6, western_countries_confirmed, label = western_countries)) + geom_label_repel(aes(color = news_states_western_countries)) + geom_point(aes(color = news_states_western_countries)) + geom_smooth(method = "gam") + scale_x_log10() + xlab("Population * 1.000.000") + ylab("Confirmed cases") + ggtitle("Figure F; Confirmed cases in the Western countries (Europe and N. America)") + theme(legend.position = c(0.23, 0.775), legend.background = element_rect(fill = "lightblue", size = 0.5, linetype = "solid", color = "darkblue")) 
+```
+
+```{r, echo=FALSE, message=FALSE}
+corona_western_countries %>% ggplot(aes(western_countries_pop/10^6, western_countries_deaths/10^3, label = western_countries)) + geom_smooth(method = "glm") + geom_label_repel(aes(color = news_states_western_countries)) + geom_point(aes(color = news_states_western_countries)) + xlab("Population * 1.000.000") + ylab("death cases * 1.000") + ggtitle("Figure G; Death cases in the Western countries (Europe and N. America)") + theme(legend.position = c(0.23, 0.775), legend.background = element_rect(fill = "lightblue", size = 0.5, linetype = "solid", color = "darkblue")) 
+```
+```
+
+```{r, echo=FALSE, message=FALSE}
+corona_western_countries %>% ggplot(aes(western_countries_pop/10^6, western_countries_deaths/10^3, label = western_countries)) + geom_smooth(method = "glm") + geom_label_repel() + geom_point() + scale_x_log10() + xlab("Population * 1.000.000") + ylab("Death cases * 1.000") + ggtitle("Figure H; Deaths cases in the Western countries (Europe and N. America)") + theme(legend.position = "right", legend.background = element_rect(fill="lightblue", size=0.5, linetype = "solid", color = "darkblue")) + labs(color = "Regions the USA: ")
+```
+
+```{r,echo=FALSE, message=FALSE}
+corona_states_uk_sp_it %>% ggplot(aes(population_states_uk_sp_it/10^6, conf_states_uk_sp_it/ 10^3, label = states_uk_sp_it)) + geom_smooth(method = "gam") + geom_label_repel(aes(color = location)) + geom_point(aes(color = location)) + scale_x_log10() +xlab("Population * 1.000.000") + ylab("Confirmed cases * 1.000") + ggtitle("Figure I; Confirmed cases of the states in the USA and Italy, Spain and the UK") + theme(legend.position = "right", legend.background = element_rect(fill="lightblue", size=0.5, linetype = "solid", color = "darkblue")) + labs(color = "Regions the USA: ")
+```
+
+```{r,echo=FALSE, message=FALSE}
+corona_states_uk_sp_it %>% ggplot(aes(population_states_uk_sp_it/10^6, deaths_states_uk_sp_it/ 10^3, label = states_uk_sp_it)) + geom_smooth(method = "gam") + geom_label_repel(aes(color = location)) + geom_point(aes(color = location)) + scale_x_log10() +xlab("Population * 1.000.000") + ylab("Death cases * 1.000") + ggtitle("Figure J; Death cases of the states in the USA and Italy, Spain and the UK") + theme(legend.position = "right", legend.background = element_rect(fill="lightblue", size=0.5, linetype = "solid", color = "darkblue")) + labs(color = "Regions the USA: ")
+```

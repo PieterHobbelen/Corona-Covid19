@@ -1,0 +1,465 @@
+---
+title: "All Corona data"
+author: "Pieter Hobbelen"
+date: "6/25/2020"
+output: html_document
+---
+
+```{r}
+# For the descriptions about each vector and object, check the original file.
+# The data chunk has two sectors, the first one contains the vectors for the dataframes and the second one makes the dataframes.
+
+state_USA <- c("New York", "New Jersey", "California", "Illinois", "Massachusetts", "Texas", "Pennsylvania", "Florida", "Michigan", "Maryland", "Georgia", "Virginia", "Louisiana", "Connecticut", "North Carolina", "Ohio", "Indiana", "Arizona", "Tennessee", "Minnesota", "Colorado", "Alabama", "Washington", "Iowa", "Wisconsin", "South Carolina", "Missisipi", "Nebraska", "Rhode Island", "Missouri", "Utah", "Kentucky", "Arkansas", "Kansas", "Nevada", "Delaware", "New Mexico", "District of Columbia", "Oklahoma", "South Dakota", "Puerto Rico", "Oregon", "New Hampshire", "Idaho", "North Dakota", "Maine", "West Virginia", "Vermont", "Wyoming", "Hawaï", "Alaska", "Montana", "Guam", "US Virgin Islands", "Northern Mariana Islands", "American Samoa")
+
+alphabetic_usa <- c(35, 33, 6, 16, 24, 48, 42, 11, 25, 23, 12, 52, 21, 8, 36, 39, 17, 4, 47, 26, 7, 1, 53, 18, 55, 45, 27, 30, 44, 28, 50, 20, 5, 19, 31, 9, 34, 10, 40, 46, 43, 41, 32, 15, 37, 22, 54, 51, 56, 14, 2, 29, 13, 49, 38, 3)
+
+region_USA <- c("North East", "North East", "South West", "Mid", "North East", "South Mid", "North East", "South East", "North Mid", "North East", "South East", "North East", "South Mid", "North East", "South East", "North East", "North East", "South West", "South East", "North Mid", "South Mid", "South East", "North West", "Mid", "North Mid", "South East", "South East", "Mid", "North East", "Mid", "South West", "North East", "South Mid", "Mid", "South West", "North East", "South Mid", "North East", "South Mid", "North Mid", "Region Atlantic Island", "North West", "North East", "North West", "North Mid", "North East", "North East", "North East", "North Mid", "Region Pacific Island", "Region Alaska", "North West", "Region Atlantic Island", "Region Pacific Island", "Region Atlantic Island", "Region Pacific Island")
+  
+abbs_states_USA <- c("NY", "NJ", "CA", "IL", "MA", "TX", "PA", "FL", "MI", "MD", "GA", "VA", "LA", "CT", "NC", "OH", "IN", "AZ", "TN", "MN", "CO", "AL", "WA", "IA", "WI", "SC", "MS", "NE", "RI", "MO", "UT", "KY", "AR", "KS", "NV", "DE", "NM", "DC", "OK", "SD", "P. Rico", "OR", "NH", "ID", "ND", "ME", "WV", "VT", "WY", "HI", "AK", "MT", "Guam", "Virgin", "N. Marianas", "Samoa")
+
+confirmed_cases_USA <- c(384000, 167000, 151000, 134000, 105000, 87854, 77999, 75568, 65672, 60613, 57681, 53211, 46619, 44461, 44119, 40424, 39146, 35691, 30432, 29795, 28822, 25615, 25171, 23350, 22932, 18795, 18483, 16315, 15947, 15585, 13577, 11945, 11547, 11419, 10678, 10173, 9845, 9654, 7848, 5742, 5536, 5377, 5209, 3353, 3016, 2721, 2233, 1119, 1027, 728, 625, 573, 185, 72, 30, 0)
+
+recovered_cases_USA <- c(NA, NA, NA, NA, 84621, 58341, 56939, NA, 42041, NA, NA, NA, 33904, NA, 23653, NA, NA, NA, 19896, NA, NA, 13508, NA, 14265, 16837, 8682, 13356, 9229, NA, NA, 7935, 3379, 7351, NA, NA, 6062, 4160, 1143, 6391, 4755, NA, 2396, 3665, 2684, 2573, 2105, 1553, 907, 815, 629, 403, 489, 169, 64, 13, NA)
+  
+death_cases_USA <- c(24579, 12676, 5089, 6507, 7538, 1976, 6162, 2931, 5990, 2900, 2451, 1534, 3014, 4146, 1109, 2508, 2396, 1188, 475, 1305, 1595, 773, 1204, 644, 694, 600, 868, 212, 833, 872, 139, 493, 171, 245, 462, 414, 440, 506, 359, 74, 146, 173, 308, 87, 74, 100, 86, 55, 18, 17, 12, 18, 5, 6, 2, 0)
+
+population_states_USA <- c(19450000, 8882000, 39510000, 12670000, 6893000, 29000000, 12800000, 21480000, 9987000, 6046000, 10620000, 8536000, 4649000, 3565000, 10490000, 11690000, 6732000, 7279000, 6829000, 5640000, 5759000, 4903000, 7615000, 3155000, 5822000, 5149000, 2976000, 1934000, 1059000, 6137000, 3206000, 4468000, 3018000, 2913000, 3080000, 973764, 2097000, 705749, 3957000, 884659, 3194000, 4218000, 1360000, 1787000, 762062, 1344000, 1792000, 623989, 578759, 1416000, 731545, 1069000, 165768, 106977, 56882, 55465)
+
+population_USA <- sum(population_states_USA)
+confirmed_cases_total_USA <- sum(confirmed_cases_USA)
+death_cases_total_USA <- sum(death_cases_USA)
+  
+confirmed_rate_percent_states_USA <- confirmed_cases_total_USA / population_USA * 100
+death_rate_percent_states_USA <- death_cases_total_USA / population_USA * 100
+  
+province_nl <- c("Groningen", "Friesland", "Drenthe", "Overijsel", "Flevoland", "Gelderland", "Utrecht", "Noord-Holland", "Zuid-Holland", "Zeeland", "Noord-Brabant", "Limburg")
+  
+region_nl <- c("North", "North", "North", "Mid", "Mid", "Mid", "Mid", "North", "Mid", "South", "South", "South")
+
+alphabetic_nl <- c(5, 3, 1, 9, 2, 4, 10, 8, 12, 11, 7, 6)
+
+population_provices_NL <-  c(583990, 647672, 492167, 1156431, 416546, 2071972, 1342158, 2853359, 3673893, 383032, 2544806, 1116137)
+
+confirmed_cases_NL <- c(358, 632, 533, 3059, 969, 6476, 3929, 7119, 10907, 728, 9637, 4857)
+
+hospital_cases_NL <- c(75, 131, 116, 549, 268, 1510, 880, 1642, 2172, 152, 2774, 1567)
+
+death_cases_NL <- c(17, 65, 40, 309, 91, 680, 424, 815, 1284, 69, 1530, 750)
+
+confirmed_cases_provinces_nl <- confirmed_cases_NL
+population_provinces_nl <- population_provices_NL
+death_cases_provinces_nl <- death_cases_NL 
+confirmed_cases_states_usa <- confirmed_cases_USA
+population_states_usa <- population_states_USA
+death_cases_states_usa <- death_cases_USA
+
+conf_rate_vector_nl <- c(confirmed_cases_provinces_nl/population_provinces_nl)
+death_rate_vector_nl <- c(death_cases_provinces_nl/population_provinces_nl)
+conf_rate_vector_usa <- c(confirmed_cases_states_usa/population_states_usa)
+death_rate_vector_usa <- c(death_cases_states_usa/population_states_usa)
+
+conf_rate_vector <- c(conf_rate_vector_nl, conf_rate_vector_usa)
+death_rate_vector <- c(death_rate_vector_nl, death_rate_vector_usa)
+
+rate_nl_conf <- c(confirmed_cases_NL * 1000 /  population_provices_NL * 100)
+rate_nl_death <- c(death_cases_NL * 1000 / population_provices_NL * 100)
+conf_rate_times_bigger_nl <- c(conf_rate_vector_nl/mean(conf_rate_vector_nl))
+death_rate_times_bigger_nl <- c(death_rate_vector_nl/mean(death_rate_vector_nl))
+
+rate_usa_conf <- c(confirmed_cases_USA * 1000/ population_states_USA * 100)
+rate_usa_death <- c(death_cases_USA * 1000/  population_states_USA * 100)
+conf_rate_times_bigger_usa <- c(conf_rate_vector_usa/mean(conf_rate_vector_usa))
+death_rate_times_bigger_usa <- c(death_rate_vector_usa/mean(death_rate_vector_usa))
+
+corona_distribution_conf <- data.frame(c("The Netherlands", "The Netherlands", "The Netherlands", "The Netherlands", "The Netherlands", "The Netherlands", "The Netherlands", "The Netherlands", "The Netherlands", "The Netherlands", "The Netherlands", "The Netherlands", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories"), c(confirmed_cases_provinces_nl/population_provinces_nl, confirmed_cases_states_usa/population_states_usa), c(death_cases_provinces_nl/population_provinces_nl, death_cases_states_usa/population_states_usa))
+
+corona_distribution_conf_nl <- data.frame(c("The Netherlands", "The Netherlands", "The Netherlands", "The Netherlands", "The Netherlands", "The Netherlands", "The Netherlands", "The Netherlands", "The Netherlands", "The Netherlands", "The Netherlands", "The Netherlands"), c(confirmed_cases_provinces_nl/population_provinces_nl), c(death_cases_provinces_nl/population_provinces_nl))
+
+corona_distribution_conf_usa <- data.frame(c("The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories", "The United States of America and its Territories"), c(confirmed_cases_states_usa/population_states_usa), c(death_cases_states_usa/population_states_usa))
+
+corona_usa_total_state <- data.frame(alphabetic_usa, state_USA, region_USA, abbs_states_USA, confirmed_cases_USA, recovered_cases_USA, death_cases_USA, population_USA, confirmed_rate_percent_states_USA, death_rate_percent_states_USA)
+  
+corona_nl_total_province <- data.frame(province_nl, region_nl, population_provices_NL , confirmed_cases_NL, hospital_cases_NL, death_cases_NL)
+
+corona_rate_state_nl <- data.frame(alphabetic_nl, province_nl, rate_nl_conf, rate_nl_death, conf_rate_times_bigger_nl, death_rate_times_bigger_nl)
+
+corona_rate_state_usa <- data.frame(alphabetic_usa, state_USA, rate_usa_conf, rate_usa_death, conf_rate_times_bigger_usa, death_rate_times_bigger_usa)
+
+Mexico_pop <- 128932753
+USA_pop <- 331002651
+Canada_pop <- 37742154
+Cuba_pop <- 11326616
+Domenican_Republic_pop <- 10847910
+Guatemala_pop <- 17915568
+Belize_pop <- 397628
+Honduras_pop <- 9904607
+El_Salvador_pop <- 6486205
+Nicaragua_pop <- 6624554
+Costa_Rica_pop <- 5094118
+Panama_pop <- 4314767
+Brazil_pop <- 212559417
+Peru_pop <- 32971854
+Argentinia_pop <- 45195774
+Venezuala_pop <- 28435940
+Surinama_pop <- 586632
+South_Africa_Country_pop <- 59308690
+Madagascar_pop <- 27691018
+Tanzania_pop <- 59734218
+Zambia_pop <- 18383955
+Cameroon_pop <- 26545863
+Egypt_pop <- 102334404
+Ethiopia_pop <- 114963588
+Uganda_pop <- 45741007
+Eritrea_pop <- 3546421
+Morocco_pop <- 36910560
+Libya_pop <- 6871292
+Mali_pop <- 20250833
+Ghana_pop <- 31072940
+Nigeria_pop <- 206139589
+Chad_pop <- 16425864
+Spain_pop <- 46754778
+UK_pop <- 67886011
+Sweden_pop <- 10099265
+Germany_pop <- 83783942
+Italy_pop <- 60461826
+Iceland_pop <- 341243
+Latvia_pop <- 1886198
+Greece_pop <- 10423054
+Russia_pop <- 145934462
+Serbia_pop <- 8737371
+Croatia_pop <- 4105267
+Ukraine_pop <- 43733762
+Slovakia_pop <- 5459642
+Yemen_pop <- 29825964
+Saudi_Arabia_pop <- 34813871
+Iran_pop <- 83992949
+Pakistan_pop <- 220892340
+India_pop <- 1380004385
+Indonesia_pop <- 273523615
+Thailand_pop <- 69799978
+Philippines_pop <- 109581078
+Myanmar_pop <- 54409800
+China_pop <- 1439323776
+South_Korea_pop <- 51269185
+Japan_pop <- 126476461
+Mongolia_pop <- 3278290
+Australia_pop <- 25499884
+New_Zealand_pop <- 4882233
+Papoea_New_Guinea_pop <- 8947024
+Falklandislands_pop <- 3480
+Fiji_pop <- 896445
+Antigua_and_Barbuda_pop <- 97929
+British_Virgin_Island_pop <- 30231
+Greenland_pop <- 56770
+New_Caledonia_pop <- 285498
+Bermuda_pop <- 62278
+Faeroer_pop <- 48863
+
+Mexico_conf_cases <- 165000
+USA_conf_cases <- 2230000
+Canada_conf_cases <- 100000
+Cuba_conf_cases <- 2295
+Domenican_Republic_conf_cases <- 24645
+Guatemala_conf_cases <- 11868
+Belize_conf_cases <- 22
+Honduras_conf_cases <- 10739
+El_Salvador_conf_cases <- 4329
+Nicaragua_conf_cases <- 1823
+Costa_Rica_conf_cases <- 1939
+Panama_conf_cases <- 23351
+Brazil_conf_cases <- 984000
+Peru_conf_cases <- 244000
+Argentinia_conf_cases <- 37497
+Venezuala_conf_cases <- 3386
+Surinama_conf_cases <- 277
+South_Africa_Country_conf_cases <- 83890
+Madagascar_conf_cases <- 1403
+Tanzania_conf_cases <- 509
+Zambia_conf_cases <- 1416
+Cameroon_conf_cases <- 10638
+Egypt_conf_cases <- 50437
+Ethiopia_conf_cases <- 3954
+Uganda_conf_cases <- 741
+Eritrea_conf_cases <- 142
+Morocco_conf_cases <- 9042
+Libya_conf_cases <- 510
+Mali_conf_cases <- 1906
+Ghana_conf_cases <- 12929
+Nigeria_conf_cases <- 18480
+Chad_conf_cases <- 854
+Spain_conf_cases <- 245000
+UK_conf_cases <- 300000
+Sweden_conf_cases <- 56043 
+Germany_conf_cases <- 190000
+Italy_conf_cases <- 238000
+Iceland_conf_cases <- 1816
+Latvia_conf_cases <- 1108
+Greece_conf_cases <- 3227
+Russia_conf_cases <- 568000
+Serbia_conf_cases <- 12616
+Croatia_conf_cases <- 2269
+Ukraine_conf_cases <- 34984
+Slovakia_conf_cases <- 1562
+Yemen_conf_cases <- 909
+Saudi_Arabia_conf_cases <- 146000
+Iran_conf_cases <- 198000
+Pakistan_conf_cases <- 165000
+India_conf_cases <- 381000
+Indonesia_conf_cases <- 43803
+Thailand_conf_cases <- 3146
+Philippines_conf_cases <- 28459
+Myanmar_conf_cases <- 286
+China_conf_cases <- 83325
+South_Korea_conf_cases <- 12306 
+Japan_conf_cases <- 17740
+Mongolia_conf_cases <- 204
+Australia_conf_cases <- 7409
+New_Zealand_conf_cases <- 1157
+Papoea_New_Guinea_conf_cases <- 8
+Falklandislands_conf_cases <- 13
+Fiji_conf_cases <- 18
+Antigua_and_Barbuda_conf_cases <- 26
+British_Virgin_Island_conf_cases <- 8
+Greenland_conf_cases <- 13
+New_Caledonia_conf_cases <- 21
+Bermuda_conf_cases <- 144
+Faeroer_conf_cases <- 187
+
+Mexico_death_cases <- 19747
+USA_death_cases <- 120000
+Canada_death_cases <- 8300
+Cuba_death_cases <- 85
+Domenican_Republic_death_cases <- 635
+Guatemala_death_cases <- 449
+Belize_death_cases <- 2
+Honduras_death_cases <- 343
+El_Salvador_death_cases <- 86
+Nicaragua_death_cases <- 64
+Costa_Rica_death_cases <- 12
+Panama_death_cases <- 475
+Brazil_death_cases <- 47897
+Peru_death_cases <- 7461
+Argentinia_death_cases <- 948
+Venezuala_death_cases <- 28
+Surinama_death_cases <- 8
+South_Africa_Country_death_cases <- 1737
+Madagascar_death_cases <- 13 
+Tanzania_death_cases <- 21
+Zambia_death_cases <- 11
+Cameroon_death_cases <- 282
+Egypt_death_cases <- 1938
+Ethiopia_death_cases <- 65
+Uganda_death_cases <-  0
+Eritrea_death_cases <- 0
+Morocco_death_cases <- 213
+Libya_death_cases <- 10
+Mali_death_cases <- 107
+Ghana_death_cases <- 66
+Nigeria_death_cases <- 475
+Chad_death_cases <- 74
+Spain_death_cases <- 28313
+UK_death_cases <- 42288
+Sweden_death_cases <- 5053
+Germany_death_cases <- 8946
+Italy_death_cases <- 34514
+Iceland_death_cases <- 10
+Latvia_death_cases <- 30
+Greece_death_cases <- 188
+Russia_death_cases <- 7841
+Serbia_death_cases <- 258
+Croatia_death_cases <- 107
+Ukraine_death_cases <- 985
+Slovakia_death_cases <- 28
+Yemen_death_cases <- 248
+Saudi_Arabia_death_cases <- 1139
+Iran_death_cases <- 9392
+Pakistan_death_cases <- 3229
+India_death_cases <- 12573
+Indonesia_death_cases <- 2373
+Thailand_death_cases <- 58
+Philippines_death_cases <- 1130
+Myanmar_death_cases <- 6
+China_death_cases <- 4634
+South_Korea_death_cases <- 280
+Japan_death_cases <- 935
+Mongolia_death_cases <- 0
+Australia_death_cases <- 102
+New_Zealand_death_cases <- 22
+Papoea_New_Guinea_death_cases <- 0
+Falklandislands_death_cases <- 0
+Fiji_death_cases <- 0
+Antigua_and_Barbuda_death_cases <- 3
+British_Virgin_Island_death_cases <- 1
+Greenland_death_cases <- 0
+New_Caledonia_death_cases <- 0
+Bermuda_death_cases <- 9
+Faeroer_death_cases <- 0
+
+North_America_pop <- Mexico_pop + USA_pop + Canada_pop
+Mid_America_pop <- Cuba_pop + Domenican_Republic_pop + Guatemala_pop + Belize_pop + Honduras_pop + El_Salvador_pop + Nicaragua_pop + Costa_Rica_pop + Panama_pop
+South_America_pop <- Brazil_pop + Peru_pop + Argentinia_pop + Venezuala_pop + Surinama_pop
+South_Africa_pop <- South_Africa_Country_pop + Madagascar_pop + Tanzania_pop + Zambia_pop
+Mid_East_Africa_pop <- Cameroon_pop + Egypt_pop + Ethiopia_pop + Uganda_pop + Eritrea_pop
+North_West_Africa_pop <- Morocco_pop + Libya_pop + Mali_pop + Ghana_pop + Nigeria_pop + Chad_pop
+North_West_Europe_pop <- Spain_pop + UK_pop + Sweden_pop + Germany_pop + Italy_pop + Iceland_pop + Latvia_pop
+East_Europe_pop <- Greece_pop + Russia_pop + Serbia_pop + Croatia_pop + Ukraine_pop + Slovakia_pop
+South_West_Azia_pop <- Yemen_pop + Saudi_Arabia_pop + Iran_pop + Pakistan_pop
+South_East_Azia_pop <- India_pop + Indonesia_pop + Thailand_pop + Philippines_pop + Myanmar_pop
+Mid_Azia_pop <- China_pop + South_Korea_pop + Japan_pop + Mongolia_pop
+Oceania_pop <- Australia_pop + New_Zealand_pop + Papoea_New_Guinea_pop
+Pacific_and_Atlantic_Island_pop <- Falklandislands_pop + Fiji_pop + Antigua_and_Barbuda_pop + British_Virgin_Island_pop + Greenland_pop + New_Caledonia_pop + 
+  Bermuda_pop + Faeroer_pop
+  
+
+North_America_conf_cases <- Mexico_conf_cases + USA_conf_cases + Canada_conf_cases
+Mid_America_conf_cases <- Cuba_conf_cases + Domenican_Republic_conf_cases + Guatemala_conf_cases + Belize_conf_cases + Honduras_conf_cases + El_Salvador_conf_cases + 
+  Nicaragua_conf_cases + Costa_Rica_conf_cases + Panama_conf_cases
+South_America_conf_cases <- Brazil_conf_cases + Peru_conf_cases + Argentinia_conf_cases + Venezuala_conf_cases + Surinama_conf_cases
+South_Africa_conf_cases <- South_Africa_Country_conf_cases + Madagascar_conf_cases + Tanzania_conf_cases + Zambia_conf_cases
+Mid_East_Africa_conf_cases <- Cameroon_conf_cases + Egypt_conf_cases + Ethiopia_conf_cases + Uganda_conf_cases + Eritrea_conf_cases
+North_West_Africa_conf_cases <- Morocco_conf_cases + Libya_conf_cases + Mali_conf_cases + Ghana_conf_cases + Nigeria_conf_cases + Chad_conf_cases
+North_West_Europe_conf_cases <- Spain_conf_cases + UK_conf_cases + Sweden_conf_cases + Germany_conf_cases + Italy_conf_cases + Iceland_conf_cases + Latvia_conf_cases
+East_Europe_conf_cases <- Greece_conf_cases + Russia_conf_cases + Serbia_conf_cases + Croatia_conf_cases + Ukraine_conf_cases + Slovakia_conf_cases
+South_West_Azia_conf_cases <- Yemen_conf_cases + Saudi_Arabia_conf_cases + Iran_conf_cases + Pakistan_conf_cases
+South_East_Azia_conf_cases <- India_conf_cases + Indonesia_conf_cases + Thailand_conf_cases + Philippines_conf_cases + Myanmar_conf_cases
+Mid_Azia_conf_cases <- China_conf_cases + South_Korea_conf_cases + Japan_conf_cases + Mongolia_conf_cases
+Oceania_conf_cases <- Australia_conf_cases + New_Zealand_conf_cases + Papoea_New_Guinea_conf_cases
+Pacific_and_Atlantic_Island_conf_cases <- Falklandislands_conf_cases + Fiji_conf_cases + Antigua_and_Barbuda_conf_cases + British_Virgin_Island_conf_cases + 
+  Greenland_conf_cases + New_Caledonia_conf_cases + Bermuda_conf_cases + Faeroer_conf_cases
+
+North_America_death_cases <- Mexico_death_cases + USA_death_cases + Canada_death_cases
+Mid_America_death_cases <- Cuba_death_cases + Domenican_Republic_death_cases + Guatemala_death_cases + Belize_death_cases + Honduras_death_cases + El_Salvador_death_cases + 
+  Nicaragua_death_cases + Costa_Rica_death_cases + Panama_death_cases
+South_America_death_cases <- Brazil_death_cases + Peru_death_cases + Argentinia_death_cases + Venezuala_death_cases + Surinama_death_cases
+South_Africa_death_cases <- South_Africa_Country_death_cases + Madagascar_death_cases + Tanzania_death_cases + Zambia_death_cases
+Mid_East_Africa_death_cases <- Cameroon_death_cases + Egypt_death_cases + Ethiopia_death_cases + Uganda_death_cases + Eritrea_death_cases
+North_West_Africa_death_cases <- Morocco_death_cases + Libya_death_cases + Mali_death_cases + Ghana_death_cases + Nigeria_death_cases + Chad_death_cases
+North_West_Europe_death_cases <- Spain_death_cases + UK_death_cases + Sweden_death_cases + Germany_death_cases + Italy_death_cases + Iceland_death_cases + Latvia_death_cases
+East_Europe_death_cases <- Greece_death_cases + Russia_death_cases + Serbia_death_cases + Croatia_death_cases + Ukraine_death_cases + Slovakia_death_cases
+South_West_Azia_death_cases <- Yemen_death_cases + Saudi_Arabia_death_cases + Iran_death_cases + Pakistan_death_cases
+South_East_Azia_death_cases <- India_death_cases + Indonesia_death_cases + Thailand_death_cases + Philippines_death_cases + Myanmar_death_cases
+Mid_Azia_death_cases <- China_death_cases + South_Korea_death_cases + Japan_death_cases + Mongolia_death_cases
+Oceania_death_cases <- Australia_death_cases + New_Zealand_death_cases + Papoea_New_Guinea_death_cases
+Pacific_and_Atlantic_Island_death_cases <- Falklandislands_death_cases + Fiji_death_cases + Antigua_and_Barbuda_death_cases + British_Virgin_Island_death_cases + 
+  Greenland_death_cases + New_Caledonia_death_cases + Bermuda_death_cases + Faeroer_death_cases
+
+
+Region <- c("North America", "Mid America", "South America", "South Africa", "Mid East Africa", "North West Africa", "North West Europe", "East Europe", 
+                        "South West Azia", "South East Azia","Mid Azia", "Oceania", "Pacific and Atlantic Islands")
+
+Abb_region <- c("N America", "Mid America", "S America", "S Africa", "ME Africa", "NW Africa", "NW Europe", "E Europe", 
+            "SW Azia", "SE Azia","M Azia", "Oceania", "Pac. Atl. Islands")
+
+Continent <- c("North America", "North America", "South America", "Africa", "Africa", "Africa", "Europe", "Europe", "Azia", "Azia","Azia", "Oceania", 
+                        "Other")
+
+Reliability_test_capacity <- c("Good", "Bad", "Bad", "Bad", "Bad", "Bad", "Very Good", "Good", 
+            "Bad", "Bad","Normal", "Good", "Bad")
+
+
+western_countries <- c("Spain", "UK", "Sweden", "Germany", "Italy", "Iceland", "Latvia", "Greece", "Russia", "Serbia", "Croatia", "Ukraine", "Slovakia", "USA", "Canada", 
+                       "Australia", "New Zealand")
+
+news_states_western_countries <- c("Problem", "Problem", "Normal Corona rate", "Normal Corona rate", "Problem", "Normal Corona rate", "Low Corona rate", "Low Corona rate", "Normal Corona rate", "Low Corona rate", "Low Corona rate", "Low Corona rate", "Low Corona rate", "Problem", "High Corona rate", "Low Corona rate", "Low Corona rate")
+
+western_countries_pop <- c(Spain_pop, UK_pop, Sweden_pop, Germany_pop, Italy_pop, Iceland_pop, Latvia_pop, Greece_pop, Russia_pop, Serbia_pop, Croatia_pop, Ukraine_pop, 
+                           Slovakia_pop, USA_pop, Canada_pop, Australia_pop, New_Zealand_pop)
+
+western_countries_confirmed <- c(Spain_conf_cases, UK_conf_cases, Sweden_conf_cases, Germany_conf_cases, Italy_conf_cases, Iceland_conf_cases, Latvia_conf_cases, Greece_conf_cases,
+                                 Russia_conf_cases, Serbia_conf_cases, Croatia_conf_cases, Ukraine_conf_cases, Slovakia_conf_cases, USA_conf_cases, Canada_conf_cases, 
+                                 Australia_conf_cases, New_Zealand_conf_cases)
+
+western_countries_deaths <- c(Spain_death_cases, UK_death_cases, Sweden_death_cases, Germany_death_cases, Italy_death_cases, Iceland_death_cases, Latvia_death_cases, Greece_death_cases,
+                              Russia_death_cases, Serbia_death_cases, Croatia_death_cases, Ukraine_death_cases, Slovakia_death_cases, USA_death_cases, Canada_death_cases, 
+                              Australia_death_cases, New_Zealand_conf_cases)
+
+western_countries_confirmed_rate <- western_countries_confirmed/western_countries_pop
+western_countries_deaths_rate <- western_countries_deaths/western_countries_pop 
+
+Population <- c(North_America_pop, Mid_America_pop, South_America_pop, South_Africa_pop, Mid_East_Africa_pop, North_West_Africa_pop, North_West_Europe_pop, 
+                                   East_Europe_pop, South_West_Azia_pop, South_East_Azia_pop, Mid_Azia_pop, Oceania_pop, Pacific_and_Atlantic_Island_pop)
+
+Confirmed_cases <- c(North_America_conf_cases, Mid_America_conf_cases, South_America_conf_cases, South_Africa_conf_cases, Mid_East_Africa_conf_cases, 
+                           North_West_Africa_conf_cases, North_West_Europe_conf_cases, East_Europe_conf_cases, South_West_Azia_conf_cases, South_East_Azia_conf_cases,
+                           Mid_Azia_conf_cases, Oceania_conf_cases, Pacific_and_Atlantic_Island_conf_cases)
+
+Death_cases <- c(North_America_death_cases, Mid_America_death_cases, South_America_death_cases, South_Africa_death_cases, Mid_East_Africa_death_cases, 
+                 North_West_Africa_death_cases, North_West_Europe_death_cases, East_Europe_death_cases, South_West_Azia_death_cases, South_East_Azia_death_cases,
+                 Mid_Azia_death_cases, Oceania_death_cases, Pacific_and_Atlantic_Island_death_cases)
+
+popover_message_regions <- c("USA and Canada", "Latin America", "The mainland of South America", "Southern Africa", "Mid eastern Africa", "North western Africa", "Western Europe and Scandinavia", "Eastern Europe and Russia", "The oil-states and western Azia", "South Eastern Azia", "Mid Azia without Russia", "Australia, New Zealand and Papoea New-Guinea", "All the small islands and archipelago")
+
+Confirmed_rate_per_million <- Confirmed_cases/Population*1000000
+
+Death_rate_per_million <- Death_cases/Population*1000000
+
+corona_continents_regions <- data.frame(Continent, Region, Population, Confirmed_cases, Death_cases, Confirmed_rate_per_million, Death_rate_per_million, popover_message_regions)
+
+
+corona_western_countries <- data.frame(western_countries, western_countries_pop, western_countries_confirmed, western_countries_deaths, western_countries_confirmed_rate, western_countries_deaths_rate, news_states_western_countries)
+
+# New dataset including the states and UK Italy and spain
+
+states_uk_sp_it <- c("New York", "New Jersey", "California", "Illinois", "Massachusetts", "Texas", "Pennsylvania", "Florida", "Michigan", "Maryland", "Georgia", "Virginia", "Louisiana", "Connecticut", "North Carolina", "Ohio", "Indiana", "Arizona", "Tennessee", "Minnesota", "Colorado", "Alabama", "Washington", "Iowa", "Wisconsin", "South Carolina", "Missisipi", "Nebraska", "Rhode Island", "Missouri", "Utah", "Kentucky", "Arkansas", "Kansas", "Nevada", "Delaware", "New Mexico", "District of Columbia", "Oklahoma", "South Dakota", "Puerto Rico", "Oregon", "New Hampshire", "Idaho", "North Dakota", "Maine", "West Virginia", "Vermont", "Wyoming", "Hawaï", "Alaska", "Montana", "Guam", "US Virgin Islands", "Northern Mariana Islands", "American Samoa", "United Kingdom", "Spain", "Italy")
+location <- c("USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA","USA", "USA", "USA", "USA", "USA","USA", "USA", "USA", "USA", "USA","USA", "USA", "USA", "USA", "USA","USA", "USA", "USA", "USA", "USA","USA", "USA", "USA", "USA", "USA","USA", "USA", "Washington D.C.", "USA", "USA","USA territory", "USA", "USA", "USA", "USA","USA", "USA", "USA", "USA", "USA","USA", "USA", "USA territory", "USA territory", "USA territory","USA territory", "Europe", "Europe", "Europe")
+population_states_uk_sp_it <- c(19450000, 8882000, 39510000, 12670000, 6893000, 29000000, 12800000, 21480000, 9987000, 6046000, 10620000, 8536000, 4649000, 3565000, 10490000, 11690000, 6732000, 7279000, 6829000, 5640000, 5759000, 4903000, 7615000, 3155000, 5822000, 5149000, 2976000, 1934000, 1059000, 6137000, 3206000, 4468000, 3018000, 2913000, 3080000, 973764, 2097000, 705749, 3957000, 884659, 3194000, 4218000, 1360000, 1787000, 762062, 1344000, 1792000, 623989, 578759, 1416000, 731545, 1069000, 165768, 106977, 56882, 55465, 66650000, 46940000, 60360000)
+conf_states_uk_sp_it <- c(384000, 167000, 151000, 134000, 105000, 87854, 77999, 75568, 65672, 60613, 57681, 53211, 46619, 44461, 44119, 40424, 39146, 35691, 30432, 29795, 28822, 25615, 25171, 23350, 22932, 18795, 18483, 16315, 15947, 15585, 13577, 11945, 11547, 11419, 10678, 10173, 9845, 9654, 7848, 5742, 5536, 5377, 5209, 3353, 3016, 2721, 2233, 1119, 1027, 728, 625, 573, 185, 72, 30, 0, 305000, 247000, 239000)
+deaths_states_uk_sp_it <- c(24579, 12676, 5089, 6507, 7538, 1976, 6162, 2931, 5990, 2900, 2451, 1534, 3014, 4146, 1109, 2508, 2396, 1188, 475, 1305, 1595, 773, 1204, 644, 694, 600, 868, 212, 833, 872, 139, 493, 171, 245, 462, 414, 440, 506, 359, 74, 146, 173, 308, 87, 74, 100, 86, 55, 18, 17, 12, 18, 5, 6, 2, 0, 42647, 28324, 34657)
+
+corona_states_uk_sp_it <- data.frame(states_uk_sp_it, location, population_states_uk_sp_it, conf_states_uk_sp_it, deaths_states_uk_sp_it)
+
+day <- c("03 04 2020", "03 05 2020", "03 06 2020", "03 07 2020", "03 08 2020", "03 09 2020", "03 10 2020", "03 11 2020", "03 12 2020", "03 13 2020", "03 14 2020", "03 15 2020", "03 16 2020", "03 17 2020", "03 18 2020", "03 19 2020", "03 20 2020", "03 21 2020", "03 22 2020", "03 23 2020", "03 24 2020", "03 25 2020", "03 26 2020", "03 27 2020", "03 28 2020", "03 29 2020", "03 30 2020", "03 31 2020", "04 01 2020", "04 02 2020", "04 03 2020", "04 04 2020", "04 05 2020", "04 06 2020", "04 07 2020", "04 08 2020", "04 09 2020", "04 10 2020", "04 11 2020", "04 12 2020", "04 13 2020", "04 14 2020", "04 15 2020", "04 16 2020", "04 17 2020", "04 18 2020", "04 19 2020", "04 20 2020", "04 21 2020", "04 22 2020", "04 23 2020", "04 24 2020", "04 25 2020", "04 26 2020", "04 27 2020", "04 28 2020", "04 29 2020", "04 30 2020", "05 01 2020", "05 02 2020", "05 03 2020", "05 04 2020", "05 05 2020", "05 06 2020", "05 07 2020", "05 08 2020", "05 09 2020", "05 10 2020", "05 11 2020", "05 12 2020", "05 13 2020", "05 14 2020", "05 15 2020", "05 16 2020", "05 17 2020", "05 18 2020", "05 19 2020", "05 20 2020", "05 21 2020", "05 22 2020", "05 23 2020", "05 24 2020", "05 25 2020", "05 26 2020", "05 27 2020", "05 28 2020", "05 29 2020", "05 30 2020", "05 31 2020", "06 01 2020", "06 02 2020", "06 03 2020", "06 04 2020", "06 05 2020", "06 06 2020", "06 07 2020", "06 08 2020", "06 09 2020", "06 10 2020", "06 11 2020", "06 12 2020", "06 13 2020", "06 14 2020", "06 15 2020", "06 16 2020", "06 17 2020", "06 18 2020", "06 19 2020", "06 20 2020", "06 21 2020", "06 22 2020", "06 23 2020", "06 24 2020")
+
+days <- c("03 04 2020", "03 05 2020", "03 06 2020", "03 07 2020", "03 08 2020", "03 09 2020", "03 10 2020", "03 11 2020", "03 12 2020", "03 13 2020", "03 14 2020", "03 15 2020", "03 16 2020", "03 17 2020", "03 18 2020", "03 19 2020", "03 20 2020", "03 21 2020", "03 22 2020", "03 23 2020", "03 24 2020", "03 25 2020", "03 26 2020", "03 27 2020", "03 28 2020", "03 29 2020", "03 30 2020", "03 31 2020", "04 01 2020", "04 02 2020", "04 03 2020", "04 04 2020", "04 05 2020", "04 06 2020", "04 07 2020", "04 08 2020", "04 09 2020", "04 10 2020", "04 11 2020", "04 12 2020", "04 13 2020", "04 14 2020", "04 15 2020", "04 16 2020", "04 17 2020", "04 18 2020", "04 19 2020", "04 20 2020", "04 21 2020", "04 22 2020", "04 23 2020", "04 24 2020", "04 25 2020", "04 26 2020", "04 27 2020", "04 28 2020", "04 29 2020", "04 30 2020", "05 01 2020", "05 02 2020", "05 03 2020", "05 04 2020", "05 05 2020", "05 06 2020", "05 07 2020", "05 08 2020", "05 09 2020", "05 10 2020", "05 11 2020", "05 12 2020", "05 13 2020", "05 14 2020", "05 15 2020", "05 16 2020", "05 17 2020", "05 18 2020", "05 19 2020", "05 20 2020", "05 21 2020", "05 22 2020", "05 23 2020", "05 24 2020", "05 25 2020", "05 26 2020", "05 27 2020", "05 28 2020", "05 29 2020", "05 30 2020", "05 31 2020", "06 01 2020", "06 02 2020", "06 03 2020", "06 04 2020", "06 05 2020", "06 06 2020", "06 07 2020", "06 08 2020", "06 09 2020", "06 10 2020", "06 11 2020", "06 12 2020", "06 13 2020", "06 14 2020", "06 15 2020", "06 16 2020", "06 17 2020", "06 18 2020", "06 19 2020", "06 20 2020", "06 21 2020", "06 22 2020", "06 23 2020", "06 24 2020", "03 04 2020", "03 05 2020", "03 06 2020", "03 07 2020", "03 08 2020", "03 09 2020", "03 10 2020", "03 11 2020", "03 12 2020", "03 13 2020", "03 14 2020", "03 15 2020", "03 16 2020", "03 17 2020", "03 18 2020", "03 19 2020", "03 20 2020", "03 21 2020", "03 22 2020", "03 23 2020", "03 24 2020", "03 25 2020", "03 26 2020", "03 27 2020", "03 28 2020", "03 29 2020", "03 30 2020", "03 31 2020", "04 01 2020", "04 02 2020", "04 03 2020", "04 04 2020", "04 05 2020", "04 06 2020", "04 07 2020", "04 08 2020", "04 09 2020", "04 10 2020", "04 11 2020", "04 12 2020", "04 13 2020", "04 14 2020", "04 15 2020", "04 16 2020", "04 17 2020", "04 18 2020", "04 19 2020", "04 20 2020", "04 21 2020", "04 22 2020", "04 23 2020", "04 24 2020", "04 25 2020", "04 26 2020", "04 27 2020", "04 28 2020", "04 29 2020", "04 30 2020", "05 01 2020", "05 02 2020", "05 03 2020", "05 04 2020", "05 05 2020", "05 06 2020", "05 07 2020", "05 08 2020", "05 09 2020", "05 10 2020", "05 11 2020", "05 12 2020", "05 13 2020", "05 14 2020", "05 15 2020", "05 16 2020", "05 17 2020", "05 18 2020", "05 19 2020", "05 20 2020", "05 21 2020", "05 22 2020", "05 23 2020", "05 24 2020", "05 25 2020", "05 26 2020", "05 27 2020", "05 28 2020", "05 29 2020", "05 30 2020", "05 31 2020", "06 01 2020", "06 02 2020", "06 03 2020", "06 04 2020", "06 05 2020", "06 06 2020", "06 07 2020", "06 08 2020", "06 09 2020", "06 10 2020", "06 11 2020", "06 12 2020", "06 13 2020", "06 14 2020", "06 15 2020", "06 16 2020", "06 17 2020", "06 18 2020", "06 19 2020", "06 20 2020", "06 21 2020", "06 22 2020", "06 23 2020", "06 24 2020")
+
+total_new_confirmed_cases_USA <- c(26, 64, 77, 101, 144, 148, 291, 269, 393, 565, 662, 676, 872, 1291, 2410, 3948, 5417, 6271, 8631, 10410, 9939, 12226, 17050, 19046, 20093, 19118, 20463, 25305, 26756, 28879, 32525, 33725, 25717, 29359, 30512, 32282, 34243, 33578, 31869, 28057, 24685, 25987, 29465, 32076, 30915, 28084, 26013, 25132, 25178, 29246, 31277, 35930, 34782, 26858, 22042, 24359, 25869, 29637, 32964, 30531, 25382, 21278, 22226, 24805, 27514, 27095, 27421, 20697, 17779, 21486, 20549, 26762, 25382, 24527, 19731, 21109, 19662, 22368, 25028, 22206, 22717, 20253, 18554, 16682, 18636, 23016, 23575, 21385, 21696, 16040, 20039, 22162, 21004, 23292, 20865, 18535, 16301, 17180, 20244, 17849, 24421, 25891, 21191, 18307, 23047, 23624, 27082, 30927, 31963, 28095, 26558, 33315, 37945)
+
+total_new_death_cases_USA <- c(2, 0, 3, 5, 2, 5, 5, 6, 4, 8, 7, 6, 14, 21, 26, 52, 55, 68, 110, 111, 162, 225, 253, 433, 447, 392, 554, 821, 940, 1075, 1185, 1353, 1175, 1212, 1928, 1936, 1856, 2078, 1899, 1493, 1462, 2378, 2438, 2141, 2080, 1743, 1634, 1643, 2624, 2119, 1840, 2053, 1825, 1161, 1237, 2204, 2536, 2083, 1794, 1668, 1117, 877, 2435, 2701, 1971, 1695, 1555, 945, 840, 1591, 1715, 1858, 1524, 1231, 785, 792, 1425, 1528, 1286, 1262, 1089, 646, 504, 634, 1379, 1216, 1175, 979, 605, 478, 1039, 1004, 909, 849, 725, 448, 491, 926, 847, 826, 759, 654, 345, 384, 739, 742, 694, 682, 550, 283, 292, 766, 688)
+
+total_new_confirmed_cases_NL <- c(0, 0, 46, 60, 76, 57, 61, 121, 111, 190, 155, 176, 278, 292, 346, 409, 534, 637, 573, 545, 811, 852, 1019, 1172, 1159, 1104, 884, 845, 1091, 1083, 1026, 904, 1224, 952, 777, 969, 1213, 1335, 1316, 1174, 964, 868, 734, 1061, 1235, 1140, 1066, 750, 729, 708, 887, 806, 655, 655, 400, 171, 386, 514, 475, 445, 335, 199, 317, 232, 455, 319, 289, 245, 161, 196, 227, 270, 200, 189, 125, 146, 108, 198, 253, 188, 176, 172, 209, 133, 190, 182, 176, 131, 185, 103, 102, 86, 209, 210, 183, 239, 165, 164, 184, 164, 210, 179, 143, 165, 139, 117, 115, 107, 76, 91, 65, 64, 82)
+
+total_new_death_cases_NL <- c(0, 0, 1, 0, 2, 1, 0, 1, 0, 5, 2, 8, 4, 19, 15, 18, 30, 30, 43, 34, 63, 80, 78, 112, 93, 132, 93, 175, 134, 166, 148, 164, 115, 101, 234, 147, 148, 115, 132, 94, 86, 122, 189, 181, 144, 142, 83, 67, 165, 138, 123, 112, 120, 66, 43, 48, 145, 84, 98, 94, 69, 26, 86, 36, 84, 71, 63, 18, 16, 54, 52, 28, 53, 27, 10, 14, 21, 33, 27, 13, 23, 11, 8, 26, 15, 32, 28, 20, 5, 6, 5, 10, 13, 15, 6, 2, 3, 15, 11, 2, 9, 4, 2, 6, 5, 4, 4, 3, 8, 1, 0, 5, 2) 
+
+some_days_test_db <- c("03 04 2020", "", "", "", "", "", "", "", "", "", "03 14 2020", "", "", "", "", "", "", "", "", "", "03 24 2020", "", "", "", "", "", "", "", "", "", "04 03 2020", "", "", "", "", "", "", "", "", "", "04 13 2020", "", "", "", "", "", "", "", "", "", "04 23 2020", "", "", "", "", "", "", "", "", "", "05 03 2020", "", "", "", "", "", "", "", "", "", "05 13 2020", "", "", "", "", "", "", "", "", "", "05 23 2020", "", "", "", "", "", "", "", "", "", "06 02 2020", "", "", "", "", "", "", "", "", "", "06 12 2020", "", "", "", "", "", "", "", "", "", "06 22 2020", "", "", "03 04 2020", "", "", "", "", "", "", "", "", "", "03 14 2020", "", "", "", "", "", "", "", "", "", "03 24 2020", "", "", "", "", "", "", "", "", "", "04 03 2020", "", "", "", "", "", "", "", "", "", "04 13 2020", "", "", "", "", "", "", "", "", "", "04 23 2020", "", "", "", "", "", "", "", "", "", "05 03 2020", "", "", "", "", "", "", "", "", "", "05 13 2020", "", "", "", "", "", "", "", "", "", "05 23 2020", "", "", "", "", "", "", "", "", "", "06 02 2020", "", "", "", "", "", "", "", "", "", "06 12 2020", "", "", "", "", "", "", "", "", "", "06 22 2020", "", "")
+
+Countries <- c("NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA","USA", "USA", "USA", "USA", "USA", "USA", "USA")  
+
+total_confirmed_cases_cum_USA <- c(cumsum(total_new_confirmed_cases_USA))
+total_death_cases_cum_USA <- c(cumsum(total_new_death_cases_USA))
+total_confirmed_cases_cum_NL <- cumsum(total_new_confirmed_cases_NL)
+total_death_cases_cum_NL <- cumsum(total_new_death_cases_NL)
+facet_country <- c(Countries,Countries)
+
+corona_usa_day_to_day <- data.frame(day, total_new_confirmed_cases_USA, total_confirmed_cases_cum_USA, total_new_death_cases_USA, total_death_cases_cum_USA)
+  
+corona_nl_day_to_day <- data.frame(day, total_new_confirmed_cases_NL, total_new_death_cases_NL, total_death_cases_cum_NL)
+
+confirmed_new_cases_both <- c(total_new_confirmed_cases_NL, total_new_confirmed_cases_USA)
+death_new_cases_both <- c(total_new_death_cases_NL, total_new_death_cases_USA)
+confirmed_cases_both_cum <- c(total_confirmed_cases_cum_NL, total_confirmed_cases_cum_USA)
+death_cases_both_cum <- c(total_death_cases_cum_NL, total_death_cases_cum_USA)
+
+
+combined_db <- data.frame(days, some_days_test_db, confirmed_new_cases_both, death_new_cases_both, confirmed_cases_both_cum, death_cases_both_cum, Countries)
+
+db_test_test <- data.frame(day, total_new_confirmed_cases_NL, total_new_confirmed_cases_USA, total_new_death_cases_NL, total_new_death_cases_USA, Countries)
+
+
+
+total_new_confirmed_cases_USA <- c(26, 64, 77, 101, 144, 148, 291, 269, 393, 565, 662, 676, 872, 1291, 2410, 3948, 5417, 6271, 8631, 10410, 9939, 12226, 17050, 19046, 20093, 19118, 20463, 25305, 26756, 28879, 32525, 33725, 25717, 29359, 30512, 32282, 34243, 33578, 31869, 28057, 24685, 25987, 29465, 32076, 30915, 28084, 26013, 25132, 25178, 29246, 31277, 35930, 34782, 26858, 22042, 24359, 25869, 29637, 32964, 30531, 25382, 21278, 22226, 24805, 27514, 27095, 27421, 20697, 17779, 21486, 20549, 26762, 25382, 24527, 19731, 21109, 19662, 22368, 25028, 22206, 22717, 20253, 18554, 16682, 18636, 23016, 23575, 21385, 21696, 16040, 20039, 22162, 21004, 23292, 20865, 18535, 16301, 17180, 20244, 17849, 24421, 25891, 21191, 18307, 23047, 23624, 27082, 30927, 31963, 28095, 26558, 33315, 37945)
+
+total_new_death_cases_USA <- c(2, 0, 3, 5, 2, 5, 5, 6, 4, 8, 7, 6, 14, 21, 26, 52, 55, 68, 110, 111, 162, 225, 253, 433, 447, 392, 554, 821, 940, 1075, 1185, 1353, 1175, 1212, 1928, 1936, 1856, 2078, 1899, 1493, 1462, 2378, 2438, 2141, 2080, 1743, 1634, 1643, 2624, 2119, 1840, 2053, 1825, 1161, 1237, 2204, 2536, 2083, 1794, 1668, 1117, 877, 2435, 2701, 1971, 1695, 1555, 945, 840, 1591, 1715, 1858, 1524, 1231, 785, 792, 1425, 1528, 1286, 1262, 1089, 646, 504, 634, 1379, 1216, 1175, 979, 605, 478, 1039, 1004, 909, 849, 725, 448, 491, 926, 847, 826, 759, 654, 345, 384, 739, 742, 694, 682, 550, 283, 292, 766, 688)
+
+total_new_confirmed_cases_NL <- c(0, 0, 46, 60, 76, 57, 61, 121, 111, 190, 155, 176, 278, 292, 346, 409, 534, 637, 573, 545, 811, 852, 1019, 1172, 1159, 1104, 884, 845, 1091, 1083, 1026, 904, 1224, 952, 777, 969, 1213, 1335, 1316, 1174, 964, 868, 734, 1061, 1235, 1140, 1066, 750, 729, 708, 887, 806, 655, 655, 400, 171, 386, 514, 475, 445, 335, 199, 317, 232, 455, 319, 289, 245, 161, 196, 227, 270, 200, 189, 125, 146, 108, 198, 253, 188, 176, 172, 209, 133, 190, 182, 176, 131, 185, 103, 102, 86, 209, 210, 183, 239, 165, 164, 184, 164, 210, 179, 143, 165, 139, 117, 115, 107, 76, 91, 65, 64, 82)
+
+total_new_death_cases_NL <- c(0, 0, 1, 0, 2, 1, 0, 1, 0, 5, 2, 8, 4, 19, 15, 18, 30, 30, 43, 34, 63, 80, 78, 112, 93, 132, 93, 175, 134, 166, 148, 164, 115, 101, 234, 147, 148, 115, 132, 94, 86, 122, 189, 181, 144, 142, 83, 67, 165, 138, 123, 112, 120, 66, 43, 48, 145, 84, 98, 94, 69, 26, 86, 36, 84, 71, 63, 18, 16, 54, 52, 28, 53, 27, 10, 14, 21, 33, 27, 13, 23, 11, 8, 26, 15, 32, 28, 20, 5, 6, 5, 10, 13, 15, 6, 2, 3, 15, 11, 2, 9, 4, 2, 6, 5, 4, 4, 3, 8, 1, 0, 5, 2) 
+
+facet_conf <- c("Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Confirmed")
+facet_deaths <- c("Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths", "Deaths")
+facet_country <- c("NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL" , "NL", "NL", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL", "NL" , "NL", "NL", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA", "USA")
+facet_cases <- c(facet_conf, facet_deaths)
+facet_amount_cases <- c(total_new_confirmed_cases_NL, total_new_confirmed_cases_USA, total_new_death_cases_NL, total_new_death_cases_USA)
+facet_days <- c(days, days)
+facet_day_to_day_database <- data.frame(facet_days, facet_amount_cases, facet_cases, facet_country)
+```
+

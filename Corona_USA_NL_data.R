@@ -1,4 +1,3 @@
-library(tidyverse)
 
 # Build databases step 1:
 # First I add all the data that I want to use for the plots. I'm going to make plots that sort the data by location. So I need the states, and their region, and to read the labels we put instead of the whole state-name 
@@ -97,30 +96,31 @@ library(tidyverse)
          "04 29 2020", "04 30 2020", "05 01 2020", "05 02 2020", "05 03 2020", "05 04 2020", "05 05 2020", "05 06 2020", "05 07 2020", "05 08 2020", "05 09 2020", "05 10 2020", "05 11 2020", "05 12 2020", 
          "05 13 2020", "05 14 2020", "05 15 2020", "05 16 2020", "05 17 2020", "05 18 2020", "05 19 2020", "05 20 2020", "05 21 2020", "05 22 2020", "05 23 2020", "05 24 2020", "05 25 2020", "05 26 2020", 
          "05 27 2020", "05 28 2020", "05 29 2020", "05 30 2020", "05 31 2020", "06 01 2020", "06 02 2020", "06 03 2020", "06 04 2020", "06 05 2020", "06 06 2020", "06 07 2020", "06 08 2020", "06 09 2020", 
-         "06 10 2020", "06 11 2020", "06 12 2020", "06 13 2020", "06 14 2020", "06 15 2020", "06 16 2020", "06 17 2020", "06 18 2020", "06 19 2020", "06 20 2020", "06 21 2020")
+         "06 10 2020", "06 11 2020", "06 12 2020", "06 13 2020", "06 14 2020", "06 15 2020", "06 16 2020", "06 17 2020", "06 18 2020", "06 19 2020", "06 20 2020", "06 21 2020", "06 22 2020", "06 23 2020",
+         "06 24 2020")
 
   # This vector contains the new confirmed cases in the USA.
   total_new_confirmed_cases_USA <- c(26, 64, 77, 101, 144, 148, 291, 269, 393, 565, 662, 676, 872, 1291, 2410, 3948, 5417, 6271, 8631, 10410, 9939, 12226, 17050, 19046, 20093, 19118, 20463, 25305, 26756, 28879, 32525, 
                                    33725, 25717, 29359, 30512, 32282, 34243, 33578, 31869, 28057, 24685, 25987, 29465, 32076, 30915, 28084, 26013, 25132, 25178, 29246, 31277, 35930, 34782, 26858, 22042, 24359, 25869,
                                    29637, 32964, 30531, 25382, 21278, 22226, 24805, 27514, 27095, 27421, 20697, 17779, 21486, 20549, 26762, 25382, 24527, 19731, 21109, 19662, 22368, 25028, 22206, 22717, 20253, 18554,
                                    16682, 18636, 23016, 23575, 21385, 21696, 16040, 20039, 22162, 21004, 23292, 20865, 18535, 16301, 17180, 20244, 17849, 24421, 25891, 21191, 18307, 23047, 23624, 27082, 30927, 31963, 
-                                   28095)
+                                   28095, 26558, 33315, 37945)
 
   # This vector contains the new confirmed deaths in the USA.
   total_new_death_cases_USA <- c(2, 0, 3, 5, 2, 5, 5, 6, 4, 8, 7, 6, 14, 21, 26, 52, 55, 68, 110, 111, 162, 225, 253, 433, 447, 392, 554, 821, 940, 1075, 1185, 1353, 1175, 1212, 1928, 1936, 1856, 2078, 1899, 1493, 1462, 
                                2378, 2438, 2141, 2080, 1743, 1634, 1643, 2624, 2119, 1840, 2053, 1825, 1161, 1237, 2204, 2536, 2083, 1794, 1668, 1117, 877, 2435, 2701, 1971, 1695, 1555, 945, 840, 1591, 1715, 1858, 1524, 
                                1231, 785, 792, 1425, 1528, 1286, 1262, 1089, 646, 504, 634, 1379, 1216, 1175, 979, 605, 478, 1039, 1004, 909, 849, 725, 448, 491, 926, 847, 826, 759, 654, 345, 384, 739, 742, 694, 682, 550, 
-                               283)
+                               283, 292, 766, 688)
 
   # This vector contains the new confirmed cases in The Netherlands, the first two values are zero because the first data is for march 6.
   total_new_confirmed_cases_NL <- c(0, 0, 46, 60, 76, 57, 61, 121, 111, 190, 155, 176, 278, 292, 346, 409, 534, 637, 573, 545, 811, 852, 1019, 1172, 1159, 1104, 884, 845, 1091, 1083, 1026, 904, 1224, 952, 777, 969, 
                                   1213, 1335, 1316, 1174, 964, 868, 734, 1061, 1235, 1140, 1066, 750, 729, 708, 887, 806, 655, 655, 400, 171, 386, 514, 475, 445, 335, 199, 317, 232, 455, 319, 289, 245, 161, 196, 227, 
                                   270, 200, 189, 125, 146, 108, 198, 253, 188, 176, 172, 209, 133, 190, 182, 176, 131, 185, 103, 102, 86, 209, 210, 183, 239, 165, 164, 184, 164, 210, 179, 143, 165, 139, 117, 115, 107, 76,
-                                  91)
+                                  91, 65, 64, 82)
   # This vector contains the new confirmed deaths in The Netherlands, the first two values are zero because the first data is for march 6.
   total_new_death_cases_NL <- c(0, 0, 1, 0, 2, 1, 0, 1, 0, 5, 2, 8, 4, 19, 15, 18, 30, 30, 43, 34, 63, 80, 78, 112, 93, 132, 93, 175, 134, 166, 148, 164, 115, 101, 234, 147, 148, 115, 132, 94, 86, 122, 189, 181, 144, 142, 
                               83, 67, 165, 138, 123, 112, 120, 66, 43, 48, 145, 84, 98, 94, 69, 26, 86, 36, 84, 71, 63, 18, 16, 54, 52, 28, 53, 27, 10, 14, 21, 33, 27, 13, 23, 11, 8, 26, 15, 32, 28, 20, 5, 6, 5, 10, 13, 
-                              15, 6, 2, 3, 15, 11, 2, 9, 4, 2, 6, 5, 4, 4, 3, 8, 1) 
+                              15, 6, 2, 3, 15, 11, 2, 9, 4, 2, 6, 5, 4, 4, 3, 8, 1, 0, 5, 2) 
 
   
   conf_rate_1000_states_NL <- confirmed_cases_NL/population_provices_NL
@@ -140,7 +140,7 @@ library(tidyverse)
 # Now we are going to combine all the vectors with data.frame() in four databases.
   
   # This one contains all the data for the states and territories in the USA.
-  corona_usa_total_state <- data.frame(state_USA, region_USA, abbs_states_USA, confirmed_cases_USA, recovered_cases_USA, death_cases_USA, population_states_USA, confirmed_rate_million_states_USA, death_rate_million_states_USA)
+  corona_usa_total_state <- data.frame(state_USA, region_USA, abbs_states_USA, confirmed_cases_USA, recovered_cases_USA, death_cases_USA, population_states_USA, confirmed_rate_thousand_states_USA, death_rate_million_states_USA)
   
   # This one contains all the data for the 12 provinces in The Netherlands.
   corona_nl_total_province <- data.frame(province_NL, region_NL, population_provices_NL , confirmed_cases_NL, hospital_cases_NL, death_cases_NL, conf_rate_1000_states_NL, death_rate_1000_states_NL)
@@ -152,6 +152,6 @@ library(tidyverse)
   corona_usa_day_to_day <- data.frame(day, total_new_confirmed_cases_NL, total_new_death_cases_NL, total_death_cases_cum_NL)
   
   corona_rates_nl <- data.frame(province_NL, type_rate, nl_rate_vector)
-  corona_rates_usa <- data.frame(confirmed_rate_million_states_USA, death_rate_million_states_USA)
+  corona_rates_usa <- data.frame(confirmed_rate_thousand_states_USA,death_rate_million_states_USA)
   
   
