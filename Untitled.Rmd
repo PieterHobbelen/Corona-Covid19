@@ -1,7 +1,0 @@
----
-title: "Corona in the United States of America compared to The Netherlands day to day"
-author: "Pieter Hobbelen"
-date: "6/22/2020"
-output: html_document
----
-
