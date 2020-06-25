@@ -1,20 +1,27 @@
 # Corona-Covid19, latest version 1.1.0 published june 25 2020.
 
 version 1.0.0
-files in the reposotiry: 8 files
-filenames, projects (1)
-  Corona-Covid19.Rproj
-filenames, datafiles R (2)
-  Corona_USA_NL_data.R
-  Corona_Continents_Data.R
-filenames, graphsfiles R (2)
-  Corona_USA_NL_graphs.R
-  Corona_Continents_graphs.R
-filenames, others (1);
-  README.md
-filenames, markdowns (2)
-  Corona_Markdown_USA_NL.Rmd
-  Corona_Markdown_USA_NL.html
+files in the reposotiry: 18 files
+filenames,
+Corona-Covid19.Rproj
+Corona_Continents_Data.R
+Corona_Continents_graphs.R
+Corona_Markdown_Continents.Rmd
+Corona_Markdown_Continents.html
+Corona_Markdown_Continents.log
+Corona_Markdown_Continents.tex
+Corona_Markdown_USA_NL.Rmd
+Corona_Markdown_USA_NL.html
+Corona_Markdown_USA_NL_days.Rmd
+Corona_Markdown_USA_NL_days.html
+Corona_Markdown_USA_NL_state.Rmd
+Corona_Markdown_USA_NL_state.html
+Corona_USA_NL_data.R
+Corona_USA_NL_graphs.R
+All_data.Rmd
+Corona_Libraries.R
+README.md
+
 
 version 1.0.1, add Corona_Libraries.R
 
@@ -29,7 +36,10 @@ How to install this project on your own computer:
   * a header
   * the R Markdown window
   
-  A 'Chunk' is an object that we create when we want to write code that we type in a R file. When we type the code outside the 'chunk' we will get the code showed as text. When we type for example the code for a plot outside a chunk we will get the code as text, when we type the same code inside the 'chunk' we will get a figure. To run a chunk we have multiple options, with the shortcut command shift return for apple and ctrl shift enter we can run the chunk where the curser is. 
+  A 'Chunk' is an object that we create when we want to write code that we type in a R file. We can create a new 'chunk' with th command alt I shortcut in apple and the ctrl alt I in windows. When we type the code outside the 'chunk' we will get the code showed as text. When we type for example the code for a plot outside a chunk we will get the code as text, when we type the same code inside the 'chunk' we will get a figure. It is important that we describe a 'chunk', so we know what the 'chunk' does, we can add a description between the {} (when a description is not unique you will get an error).  To run a chunk we have multiple options, with the shortcut command shift return for apple and ctrl shift enter we can run the chunk where the curser is. An other option is to run the chunk is to click on the green arrow in the upper right corner of the chunk. The last option is by using the run-button in the upper right corner of the window, we will get more options for running the chunks. We can choose to run a specific line, the currunt, the next, all above, all below or all 'chunks'.
+  Knit is a tool in R Markdown to run all chunks and get a report in a new window. We can use Knit by clicking on the Knit-button in the upper left corner. It can take some time to Knit, but we can see progress in the R Markdown window in a percentage. When we get the output we will see also the code of the figures, when we type between the {}, something like {R plot a figure, echo = FALSE, message = FALSE} we can hide the code. In the output-window we see in the upper left corner a button 'open in browser', we can click on this button to see the final html-page.
+  The header gives us information about the report, we can add several thing to the header but we start with the title, the author, the data and the type of the report. These four things are automaticly added to the header when we created the R Markdown file.
+  The R Markdown window is a window like the console window, and is located at the same position on your screen. It is a tablad in the collection Console, Terminal, R Markdown and Jobs. We see the progress when we Knit the file. We see that we have two versions, that we can switch in the upper right corner. We have a R Markdown window that contains the output, and a R Markdown window with the Issues. When an error accurs the page switches automatticaly to the Issues version.
   
   
   
